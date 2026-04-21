@@ -1,8 +1,9 @@
 import { cn } from '../../lib/utils';
 
 const variants = {
-  primary: 'bg-primary hover:bg-on-primary-fixed-variant text-on-primary',
+  primary: 'bg-primary-gradient text-on-primary hover:opacity-90',
   secondary: 'bg-secondary-container hover:bg-secondary-fixed-dim text-on-secondary-container',
+  tertiary: 'bg-transparent text-primary hover:bg-primary-fixed/40',
   outline: 'border border-primary text-primary hover:bg-primary-fixed/40',
   ghost: 'text-on-surface-variant hover:bg-surface-container',
   'ghost-white': 'border border-white/40 text-white hover:bg-white/10',

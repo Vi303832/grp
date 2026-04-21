@@ -71,3 +71,14 @@ export function useCampaigns({
 export function useFeaturedCampaigns({ cityId = 'bursa', max = 6 } = {}) {
   return useCampaigns({ cityId, onlyFeatured: true, max });
 }
+
+/**
+ * Bir şehir için TÜM aktif kampanyaları tek seferde getirir.
+ * Ana sayfada client-side filtreleme (kategori + arama) için kullanılır.
+ * Böylece her kategori/arama değişikliğinde Firestore'a yeni istek atılmaz.
+ *
+ * Query key sadece cityId'ye bağlı olduğundan aynı şehir için cache paylaşılır.
+ */
+export function useActiveCampaigns({ cityId = 'bursa', max = 200 } = {}) {
+  return useCampaigns({ cityId, max });
+}

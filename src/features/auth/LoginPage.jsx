@@ -42,7 +42,7 @@ export default function LoginPage() {
     <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-surface-container-low px-4 py-12">
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
-          <h1 className="font-headline italic text-3xl text-on-surface">Hoş Geldiniz</h1>
+          <h1 className="font-headline font-extrabold text-3xl text-on-surface">Hoş Geldiniz</h1>
           <p className="mt-2 font-label text-sm text-on-surface-variant">
             Hesabın yok mu?{' '}
             <Link to="/kayit" className="font-semibold text-primary hover:underline underline-offset-2">

@@ -8,7 +8,7 @@ function ProfilePage() {
   return (
     <Card>
       <CardBody>
-        <h2 className="mb-5 font-headline italic text-xl text-on-surface">Profilim</h2>
+        <h2 className="mb-5 font-headline font-extrabold text-xl text-on-surface">Profilim</h2>
         <dl className="space-y-3 text-sm font-label">
           <div className="flex gap-3">
             <dt className="w-36 font-medium text-on-surface-variant">Ad Soyad</dt>

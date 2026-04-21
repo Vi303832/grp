@@ -1,189 +1,375 @@
 /**
- * Firestore başlangıç verilerini yükler: şehirler, kategoriler,
- * örnek işletme ve örnek kampanyalar (geliştirme için).
+ * Firestore başlangıç verileri:
+ *   - şehirler (6 büyük şehir, hepsi aktif)
+ *   - kategoriler (11)
+ *   - örnek işletmeler
+ *   - örnek kampanyalar (~24 adet, farklı şehir ve kategorilerde)
  *
  * Kullanım:
  *   node scripts/seedFirestore.mjs
  *
  * Gereklilikler:
  *   - GOOGLE_APPLICATION_CREDENTIALS ortam değişkeni Firebase Admin servis hesabına işaret etmeli
- *     VEYA Firebase emulator çalışıyor olmalı (FIRESTORE_EMULATOR_HOST=localhost:8080)
  */
 
 import { initializeApp, getApps } from 'firebase-admin/app';
 import { getFirestore, Timestamp, FieldValue } from 'firebase-admin/firestore';
 
-if (!getApps().length) {
-  initializeApp();
-}
+if (!getApps().length) initializeApp();
 
 const db = getFirestore();
 
 // ─── Şehirler ────────────────────────────────────────────────────────────────
 const cities = [
-  { id: 'bursa', name: 'Bursa', slug: 'bursa', isActive: true },
+  { id: 'bursa',     name: 'Bursa',     slug: 'bursa',     isActive: true, order: 1 },
+  { id: 'istanbul',  name: 'İstanbul',  slug: 'istanbul',  isActive: true, order: 2 },
+  { id: 'ankara',    name: 'Ankara',    slug: 'ankara',    isActive: true, order: 3 },
+  { id: 'izmir',     name: 'İzmir',     slug: 'izmir',     isActive: true, order: 4 },
+  { id: 'antalya',   name: 'Antalya',   slug: 'antalya',   isActive: true, order: 5 },
+  { id: 'eskisehir', name: 'Eskişehir', slug: 'eskisehir', isActive: true, order: 6 },
 ];
 
 // ─── Kategoriler ─────────────────────────────────────────────────────────────
 const categories = [
-  { id: 'restoran',    name: 'Restoran',    slug: 'restoran',    icon: 'restaurant',        order: 1 },
-  { id: 'spa',         name: 'Spa & Masaj', slug: 'spa',         icon: 'spa',               order: 2 },
-  { id: 'eglence',     name: 'Eğlence',     slug: 'eglence',     icon: 'confirmation_number', order: 3 },
-  { id: 'spor',        name: 'Spor',        slug: 'spor',        icon: 'fitness_center',    order: 4 },
-  { id: 'guzellik',    name: 'Güzellik',    slug: 'guzellik',    icon: 'face_retouching_natural', order: 5 },
-  { id: 'seyahat',     name: 'Seyahat',     slug: 'seyahat',     icon: 'flight_takeoff',    order: 6 },
-  { id: 'egitim',      name: 'Eğitim',      slug: 'egitim',      icon: 'school',            order: 7 },
-  { id: 'diger',       name: 'Diğer',       slug: 'diger',       icon: 'sell',              order: 99 },
+  { id: 'restoran',  name: 'Restoran & Kafe',  slug: 'restoran',  icon: 'restaurant',              order: 1 },
+  { id: 'guzellik',  name: 'Güzellik & Bakım', slug: 'guzellik',  icon: 'spa',                     order: 2 },
+  { id: 'seyahat',   name: 'Seyahat & Otel',   slug: 'seyahat',   icon: 'luggage',                 order: 3 },
+  { id: 'wellness',  name: 'Sağlık & Wellness', slug: 'wellness', icon: 'self_care',               order: 4 },
+  { id: 'eglence',   name: 'Eğlence & Aktivite', slug: 'eglence', icon: 'theater_comedy',          order: 5 },
+  { id: 'spor',      name: 'Spor & Fitness',   slug: 'spor',      icon: 'fitness_center',          order: 6 },
+  { id: 'egitim',    name: 'Eğitim & Kurs',    slug: 'egitim',    icon: 'school',                  order: 7 },
+  { id: 'alisveris', name: 'Alışveriş',        slug: 'alisveris', icon: 'shopping_bag',            order: 8 },
+  { id: 'otomotiv',  name: 'Otomotiv',         slug: 'otomotiv',  icon: 'directions_car',          order: 9 },
+  { id: 'evcil',     name: 'Evcil Hayvan',     slug: 'evcil',     icon: 'pets',                    order: 10 },
+  { id: 'diger',     name: 'Diğer',            slug: 'diger',     icon: 'sell',                    order: 99 },
 ];
 
-// ─── Örnek İşletme (dev için) ────────────────────────────────────────────────
+// ─── Örnek İşletmeler ────────────────────────────────────────────────────────
 const demoBusinesses = [
-  {
-    id: 'demo-spa',
-    name: 'Ethereal Sanctuary Spa',
-    ownerId: 'demo-owner-uid',
-    contactEmail: 'info@etherealsanctuary.com',
-    phone: '+90 224 000 00 00',
-    address: 'Heykel Mah. Atatürk Cd. No:1, Osmangazi / Bursa',
-    cityId: 'bursa',
-    isActive: true,
-  },
-  {
-    id: 'demo-restaurant',
-    name: 'Teras Bosphorus',
-    ownerId: 'demo-owner-uid',
-    contactEmail: 'info@terasbosphorus.com',
-    phone: '+90 224 000 00 01',
-    address: 'Çekirge Cd. No:12, Osmangazi / Bursa',
-    cityId: 'bursa',
-    isActive: true,
-  },
+  { id: 'ethereal-spa',     name: 'Ethereal Sanctuary Spa',   cityId: 'bursa',     district: 'Nilüfer',       address: 'Nilüfer Kent Meydanı No:4' },
+  { id: 'bahce-cafe',       name: 'Bahçe Cafe & Restaurant',  cityId: 'bursa',     district: 'Osmangazi',     address: 'Heykel Mah. Atatürk Cd. No:1' },
+  { id: 'beef-house',       name: 'Beef House Grill',         cityId: 'bursa',     district: 'Nilüfer',       address: 'İhsaniye Mah. FSM Bulvarı No:8' },
+  { id: 'sakura-sushi',     name: 'Sakura Sushi Bar',         cityId: 'bursa',     district: 'Mudanya',       address: 'Güzelyalı Mah. Sahil Cd. No:21' },
+  { id: 'la-bella',         name: 'La Bella Pizzeria',        cityId: 'bursa',     district: 'Yıldırım',      address: 'Millet Cd. No:56' },
+  { id: 'lumen-beauty',     name: 'Lumen Beauty Clinic',      cityId: 'bursa',     district: 'Nilüfer',       address: 'Konak Mah. Merkez Cd. No:12' },
+  { id: 'elan-kuafor',      name: 'Élan Kuaför & Studio',     cityId: 'bursa',     district: 'Osmangazi',     address: 'Çekirge Cd. No:47' },
+  { id: 'uludag-termal',    name: 'Uludağ Termal Resort',     cityId: 'bursa',     district: 'Osmangazi',     address: 'Uludağ Yolu 12. Km' },
+  { id: 'cihangir-bistro',  name: 'Cihangir Bistro',          cityId: 'istanbul',  district: 'Beyoğlu',       address: 'Sıraselviler Cd. No:33' },
+  { id: 'kadikoy-dok',      name: 'Dok Balık & Mezze',        cityId: 'istanbul',  district: 'Kadıköy',       address: 'Moda Cd. No:88' },
+  { id: 'nisantasi-skin',   name: 'Nişantaşı Skin Clinic',    cityId: 'istanbul',  district: 'Şişli',         address: 'Teşvikiye Cd. No:102' },
+  { id: 'bosphorus-hotel',  name: 'Bosphorus Palace Hotel',   cityId: 'istanbul',  district: 'Beşiktaş',      address: 'Yıldız Cd. No:4' },
+  { id: 'cankaya-steak',    name: 'Çankaya Steakhouse',       cityId: 'ankara',    district: 'Çankaya',       address: 'Tunalı Hilmi Cd. No:66' },
+  { id: 'ankara-spa-mavi',  name: 'Mavi Wellness Spa',        cityId: 'ankara',    district: 'Çankaya',       address: 'Kavaklıdere Cilingir Sok. No:3' },
+  { id: 'alsancak-kahve',   name: 'Alsancak Coffee House',    cityId: 'izmir',     district: 'Konak',         address: 'Kıbrıs Şehitleri Cd. No:41' },
+  { id: 'cesme-resort',     name: 'Çeşme Beach Resort',       cityId: 'izmir',     district: 'Çeşme',         address: 'Ilıca Sahili No:1' },
+  { id: 'izmir-yoga',       name: 'Asana Yoga & Pilates',     cityId: 'izmir',     district: 'Karşıyaka',     address: 'Bostanlı Mah. No:14' },
+  { id: 'lara-beach',       name: 'Lara Beach Resort & Spa',  cityId: 'antalya',   district: 'Muratpaşa',     address: 'Lara Turizm Alanı' },
+  { id: 'kaleici-meyhane',  name: 'Kaleiçi Meyhanesi',        cityId: 'antalya',   district: 'Muratpaşa',     address: 'Kaleiçi Hıdırlık Sok. No:7' },
+  { id: 'antalya-fitness',  name: 'Core Fitness Club',        cityId: 'antalya',   district: 'Konyaaltı',     address: 'Hurma Mah. Konyaaltı Cd.' },
+  { id: 'odunpazari-cafe',  name: 'Odunpazarı Köşkü',         cityId: 'eskisehir', district: 'Odunpazarı',    address: 'Atlıhan Sok. No:19' },
+  { id: 'eski-wellness',    name: 'Termal Wellness Center',   cityId: 'eskisehir', district: 'Tepebaşı',      address: 'Hamamyolu Sk. No:3' },
 ];
 
-// ─── Örnek Kampanyalar (dev için) ────────────────────────────────────────────
+// ─── Kampanyalar (~24) ───────────────────────────────────────────────────────
 const DAY = 24 * 60 * 60 * 1000;
 const now = Date.now();
 
+// Unsplash seed görselleri (hızlı, lazy load uyumlu)
+const IMG = (id, seed) =>
+  `https://images.unsplash.com/${id}?auto=format&fit=crop&w=1000&q=80${seed ? `&sig=${seed}` : ''}`;
+
 const demoCampaigns = [
+  // ── Bursa — Spa & Wellness ───────────────────────────────────────
   {
     id: 'aromaterapi-kacis',
     title: 'Aromaterapi Kaçış Paketi',
-    slug: 'aromaterapi-kacis-paketi',
-    description:
-      '90 dakikalık aromatik yağ masajı, özel buhar seansı ve bitki çayı ikramı. Haftanın yorgunluğunu atın, içsel dengenizi yeniden kurun.',
-    businessId: 'demo-spa',
+    description: '90 dakikalık aromatik yağ masajı, özel buhar seansı ve bitki çayı ikramı. Haftanın yorgunluğunu atın.',
+    businessId: 'ethereal-spa',
+    businessName: 'Ethereal Sanctuary Spa',
     cityId: 'bursa',
-    categoryId: 'spa',
-    price: 980,
-    originalPrice: 1400,
-    images: [
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuBabKUWvZgRmuNzv2ERfn1a9wW8I1SjW03MMHHX6iNRPmsh1kuvlUcz9lmnYjWilETqxwxQJ4Gjue2-QtpMgZSm98JoKW6onQe7puApuJE8gIDhlUlajx0FeOQrXhCOsZ8-1ZPAmqm5zsnTd1ha2-PW1htZzs1_uL8RKjI7-wn1AV8QtT6DDc8A2dyU4FhBLEiT9fa-MjZZMJdzmOMWoZFOb2jRsjftCn6Sbuf13k5v3r0obGSwC0IMFgbjHJunDcJebGES9178-cQ',
-    ],
-    quota: 100,
-    soldCount: 12,
-    isActive: true,
-    isFeatured: true,
-    expiresAt: new Date(now + 14 * DAY),
-  },
-  {
-    id: 'gelinlik-isilti',
-    title: 'Gelinlik Işıltısı Programı',
-    slug: 'gelinlik-isiltisi-programi',
-    description:
-      '4 haftalık cilt bakımı ve vücut polisajı programı. Özel gününüz için tam kapsamlı bir hazırlık deneyimi.',
-    businessId: 'demo-spa',
-    cityId: 'bursa',
-    categoryId: 'guzellik',
-    price: 3200,
-    originalPrice: 4250,
-    images: [
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuDDWJ4hRq0TSARuLC5o0bZTRW8F_4HaOLCCPAEnsyqr6Muh7WRQnRsij0EsWYUU1lsbEaSjuuh1k-y-iy3CSVyAn94m4rsMEz2qyqGI1URl5xk9zH29vNqSd6z8tHU6fOFW3O8OSNnhKJCOLFcDeJufDLZ8JgLJzCaxmuEptEi-SsT9jj6px0iWus00XFVPAZ0SOpZPZJxBhFWLpL3WJvZLlP9G1NtNYdaiXiRHgSoQSETVLXQJr7GNpFtzdExVygJpDFIMj-AFdgs',
-    ],
-    quota: 50,
-    soldCount: 5,
-    isActive: true,
-    isFeatured: true,
-    expiresAt: new Date(now + 21 * DAY),
+    district: 'Nilüfer',
+    categoryId: 'wellness',
+    price: 980, originalPrice: 1400, rating: 4.9,
+    images: ['https://lh3.googleusercontent.com/aida-public/AB6AXuBabKUWvZgRmuNzv2ERfn1a9wW8I1SjW03MMHHX6iNRPmsh1kuvlUcz9lmnYjWilETqxwxQJ4Gjue2-QtpMgZSm98JoKW6onQe7puApuJE8gIDhlUlajx0FeOQrXhCOsZ8-1ZPAmqm5zsnTd1ha2-PW1htZzs1_uL8RKjI7-wn1AV8QtT6DDc8A2dyU4FhBLEiT9fa-MjZZMJdzmOMWoZFOb2jRsjftCn6Sbuf13k5v3r0obGSwC0IMFgbjHJunDcJebGES9178-cQ'],
+    quota: 100, soldCount: 12, isFeatured: true, daysLeft: 14,
   },
   {
     id: 'sicak-tas-terapisi',
     title: 'Sıcak Taş Terapisi',
-    slug: 'sicak-tas-terapisi',
-    description:
-      'Isıtılmış bazalt taşları ve botanik yağlarıyla derin doku gevşemesi. 75 dakikalık bir ritüel.',
-    businessId: 'demo-spa',
+    description: 'Isıtılmış bazalt taşları ve botanik yağlarıyla derin doku gevşemesi. 75 dakikalık ritüel.',
+    businessId: 'ethereal-spa',
+    businessName: 'Ethereal Sanctuary Spa',
     cityId: 'bursa',
-    categoryId: 'spa',
-    price: 775,
-    originalPrice: 1050,
-    images: [
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuAIeuke514OVHHTN5RPoahiVdsL8sAFMMrKsAHmL4A2kOw4tpajULDjKyXNi5fduUBLZtWOmeNaKo1TFWxUy7f-k_dAM1Hu-QfwZF0dkCbplX3x1sYy1zPoaDeQn89DcU3Qb_ySFq4pXtG9caprRBIYyeUIIzcE8IB19H-tW9GYoOBR5_YjEnHQCUo5PzWe4ra1t_iwlu_abFliiwJ58uykppiYsnaKKDU8YGa1Scs0bO-BG7bCXF6FrVINJ-P_Z54ACLjsceGBWGI',
-    ],
-    quota: 80,
-    soldCount: 30,
-    isActive: true,
-    isFeatured: true,
-    expiresAt: new Date(now + 10 * DAY),
+    district: 'Nilüfer',
+    categoryId: 'wellness',
+    price: 775, originalPrice: 1050, rating: 4.8,
+    images: ['https://lh3.googleusercontent.com/aida-public/AB6AXuAIeuke514OVHHTN5RPoahiVdsL8sAFMMrKsAHmL4A2kOw4tpajULDjKyXNi5fduUBLZtWOmeNaKo1TFWxUy7f-k_dAM1Hu-QfwZF0dkCbplX3x1sYy1zPoaDeQn89DcU3Qb_ySFq4pXtG9caprRBIYyeUIIzcE8IB19H-tW9GYoOBR5_YjEnHQCUo5PzWe4ra1t_iwlu_abFliiwJ58uykppiYsnaKKDU8YGa1Scs0bO-BG7bCXF6FrVINJ-P_Z54ACLjsceGBWGI'],
+    quota: 80, soldCount: 30, isFeatured: true, daysLeft: 10,
+  },
+  {
+    id: 'gelinlik-isilti',
+    title: 'Gelinlik Işıltısı Programı',
+    description: '4 haftalık cilt bakımı ve vücut polisajı programı. Özel gününüz için tam kapsamlı hazırlık.',
+    businessId: 'lumen-beauty',
+    businessName: 'Lumen Beauty Clinic',
+    cityId: 'bursa',
+    district: 'Nilüfer',
+    categoryId: 'guzellik',
+    price: 3200, originalPrice: 4250, rating: 4.9,
+    images: ['https://lh3.googleusercontent.com/aida-public/AB6AXuDDWJ4hRq0TSARuLC5o0bZTRW8F_4HaOLCCPAEnsyqr6Muh7WRQnRsij0EsWYUU1lsbEaSjuuh1k-y-iy3CSVyAn94m4rsMEz2qyqGI1URl5xk9zH29vNqSd6z8tHU6fOFW3O8OSNnhKJCOLFcDeJufDLZ8JgLJzCaxmuEptEi-SsT9jj6px0iWus00XFVPAZ0SOpZPZJxBhFWLpL3WJvZLlP9G1NtNYdaiXiRHgSoQSETVLXQJr7GNpFtzdExVygJpDFIMj-AFdgs'],
+    quota: 50, soldCount: 5, isFeatured: true, daysLeft: 21,
   },
   {
     id: 'cicekli-banyo',
     title: 'Çiçekli Banyo Ritüeli',
-    slug: 'cicekli-banyo-rituali',
-    description:
-      'Değerli yağlar eşliğinde 30 dakikalık banyo ve ardından minerallerle canlandırıcı masaj. Haftalık özel.',
-    businessId: 'demo-spa',
+    description: 'Değerli yağlar eşliğinde 30 dakikalık banyo ve ardından minerallerle canlandırıcı masaj.',
+    businessId: 'ethereal-spa',
+    businessName: 'Ethereal Sanctuary Spa',
     cityId: 'bursa',
-    categoryId: 'spa',
-    price: 600,
-    originalPrice: 900,
-    images: [
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuB4opsxUB-GtC5HZpmxuZzpy7ehp9s14u92WIH4PPinbFbjJnJVQhMAy5kcno97vMwVh_LNXtjF59UsrqaDN05kI_hLEhXOoqhgYDG7NYG0JNwriApXi4m78EGh4L3Qv7ur8rhvdXi5Z5WtmaeKiJ_WwBPm-qqyChK0BW6SgKFaKuSEfNjdEvIt6T9gH6zFtEn4eUsAlXQm32MiujctG5O3MQwdo74ZrtIaigWu7E7RlcJDurq3nNq_Oz2G0a06wIlccgqTuUaGfoE',
-    ],
-    quota: 40,
-    soldCount: 22,
-    isActive: true,
-    isFeatured: false,
-    expiresAt: new Date(now + 3 * DAY),
+    district: 'Nilüfer',
+    categoryId: 'wellness',
+    price: 600, originalPrice: 900, rating: 4.7,
+    images: ['https://lh3.googleusercontent.com/aida-public/AB6AXuB4opsxUB-GtC5HZpmxuZzpy7ehp9s14u92WIH4PPinbFbjJnJVQhMAy5kcno97vMwVh_LNXtjF59UsrqaDN05kI_hLEhXOoqhgYDG7NYG0JNwriApXi4m78EGh4L3Qv7ur8rhvdXi5Z5WtmaeKiJ_WwBPm-qqyChK0BW6SgKFaKuSEfNjdEvIt6T9gH6zFtEn4eUsAlXQm32MiujctG5O3MQwdo74ZrtIaigWu7E7RlcJDurq3nNq_Oz2G0a06wIlccgqTuUaGfoE'],
+    quota: 40, soldCount: 22, isFeatured: false, daysLeft: 3,
+  },
+  // ── Bursa — Restoran ─────────────────────────────────────────────
+  {
+    id: 'serpme-kahvalti',
+    title: 'Serpme Köy Kahvaltısı (2 Kişi)',
+    description: 'Yöresel lezzetlerle hazırlanmış sınırsız serpme kahvaltı. Ev yapımı reçel ve kaymak dahil.',
+    businessId: 'bahce-cafe',
+    businessName: 'Bahçe Cafe & Restaurant',
+    cityId: 'bursa', district: 'Osmangazi', categoryId: 'restoran',
+    price: 429, originalPrice: 780, rating: 4.8,
+    images: [IMG('photo-1533089860892-a7c6f0a88666', 1)],
+    quota: 100, soldCount: 43, isFeatured: false, daysLeft: 20,
   },
   {
-    id: 'bosphorus-aksam',
+    id: 'steak-menu',
+    title: 'Premium Steak Menüsü (2 Kişi)',
+    description: 'Dry-age biftek, şef özel sosları ve ev yapımı tatlı içeren 4 kap menü.',
+    businessId: 'beef-house',
+    businessName: 'Beef House Grill',
+    cityId: 'bursa', district: 'Nilüfer', categoryId: 'restoran',
+    price: 1680, originalPrice: 2400, rating: 4.9,
+    images: [IMG('photo-1544025162-d76694265947', 2)],
+    quota: 60, soldCount: 18, isFeatured: true, daysLeft: 30,
+  },
+  {
+    id: 'sushi-set',
+    title: '32 Parça Karışık Sushi Seti',
+    description: 'Uzakdoğu lezzetleri: nigiri, maki, uramaki ve özel şef seçkisi.',
+    businessId: 'sakura-sushi',
+    businessName: 'Sakura Sushi Bar',
+    cityId: 'bursa', district: 'Mudanya', categoryId: 'restoran',
+    price: 550, originalPrice: 1100, rating: 4.7,
+    images: [IMG('photo-1579871494447-9811cf80d66c', 3)],
+    quota: 80, soldCount: 25, isFeatured: false, daysLeft: 7,
+  },
+  {
+    id: 'italyan-pizza',
+    title: 'İtalyan Pizza + İçecek Menü',
+    description: 'Taş fırında pişmiş orijinal İtalyan pizza ve ev yapımı limonata.',
+    businessId: 'la-bella',
+    businessName: 'La Bella Pizzeria',
+    cityId: 'bursa', district: 'Yıldırım', categoryId: 'restoran',
+    price: 315, originalPrice: 420, rating: 4.6,
+    images: [IMG('photo-1513104890138-7c749659a591', 4)],
+    quota: 200, soldCount: 87, isFeatured: false, daysLeft: 14,
+  },
+  // ── Bursa — Güzellik ─────────────────────────────────────────────
+  {
+    id: 'hydrafacial',
+    title: 'Hydrafacial Cilt Bakımı',
+    description: '3 aşamalı cilt bakımı: derin temizlik, ekstraksiyon ve serum uygulaması.',
+    businessId: 'lumen-beauty',
+    businessName: 'Lumen Beauty Clinic',
+    cityId: 'bursa', district: 'Nilüfer', categoryId: 'guzellik',
+    price: 810, originalPrice: 1800, rating: 4.9,
+    images: [IMG('photo-1570172619644-dfd03ed5d881', 5)],
+    quota: 50, soldCount: 14, isFeatured: false, daysLeft: 15,
+  },
+  {
+    id: 'keratin-bakim',
+    title: 'Keratin Bakım + Fön Paketi',
+    description: 'Saçlarınıza profesyonel keratin bakımı ve şekillendirme.',
+    businessId: 'elan-kuafor',
+    businessName: 'Élan Kuaför & Studio',
+    cityId: 'bursa', district: 'Osmangazi', categoryId: 'guzellik',
+    price: 900, originalPrice: 1500, rating: 4.8,
+    images: [IMG('photo-1560066984-138dadb4c035', 6)],
+    quota: 80, soldCount: 33, isFeatured: false, daysLeft: 25,
+  },
+  // ── Bursa — Seyahat ──────────────────────────────────────────────
+  {
+    id: 'uludag-termal-kacamak',
+    title: 'Uludağ Termal Kaçamağı (2 Gece)',
+    description: '2 kişilik termal süit, yarım pansiyon ve spa kullanımı dahil.',
+    businessId: 'uludag-termal',
+    businessName: 'Uludağ Termal Resort',
+    cityId: 'bursa', district: 'Osmangazi', categoryId: 'seyahat',
+    price: 3025, originalPrice: 4200, rating: 4.7,
+    images: [IMG('photo-1566073771259-6a8506099945', 7)],
+    quota: 40, soldCount: 11, isFeatured: true, daysLeft: 45,
+  },
+  // ── İstanbul ─────────────────────────────────────────────────────
+  {
+    id: 'cihangir-brunch',
     title: 'Boğaz Manzaralı Akşam Yemeği',
-    slug: 'bogaz-manzarali-aksam-yemegi-2-kisilik',
-    description:
-      '2 kişilik set menü: giriş, ana yemek, tatlı ve bir şişe ev şarabı. Canlı müzik eşliğinde.',
-    businessId: 'demo-restaurant',
-    cityId: 'bursa',
-    categoryId: 'restoran',
-    price: 1450,
-    originalPrice: 2000,
-    images: [
-      'https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=1200&q=80',
-    ],
-    quota: 60,
-    soldCount: 18,
-    isActive: true,
-    isFeatured: true,
-    expiresAt: new Date(now + 30 * DAY),
+    description: '2 kişilik set menü: giriş, ana yemek, tatlı ve bir şişe ev şarabı. Canlı müzik eşliğinde.',
+    businessId: 'cihangir-bistro',
+    businessName: 'Cihangir Bistro',
+    cityId: 'istanbul', district: 'Beyoğlu', categoryId: 'restoran',
+    price: 1450, originalPrice: 2000, rating: 4.8,
+    images: [IMG('photo-1514933651103-005eec06c04b', 8)],
+    quota: 80, soldCount: 37, isFeatured: true, daysLeft: 30,
   },
   {
-    id: 'fitness-aylik',
+    id: 'kadikoy-balik',
+    title: 'Kadıköy Balık & Mezze Ziyafeti (2 Kişi)',
+    description: 'Günlük taze balık, 8 çeşit meze ve ev yapımı rakı servisi.',
+    businessId: 'kadikoy-dok',
+    businessName: 'Dok Balık & Mezze',
+    cityId: 'istanbul', district: 'Kadıköy', categoryId: 'restoran',
+    price: 1280, originalPrice: 1900, rating: 4.7,
+    images: [IMG('photo-1467003909585-2f8a72700288', 9)],
+    quota: 60, soldCount: 22, isFeatured: false, daysLeft: 20,
+  },
+  {
+    id: 'nisantasi-skin',
+    title: 'Lazer Epilasyon Paketi (5 Seans)',
+    description: 'FDA onaylı cihazlarla tam vücut lazer epilasyon. 5 seansı kapsar.',
+    businessId: 'nisantasi-skin',
+    businessName: 'Nişantaşı Skin Clinic',
+    cityId: 'istanbul', district: 'Şişli', categoryId: 'guzellik',
+    price: 4800, originalPrice: 9600, rating: 4.9,
+    images: [IMG('photo-1596462502278-27bfdc403348', 10)],
+    quota: 30, soldCount: 9, isFeatured: true, daysLeft: 60,
+  },
+  {
+    id: 'bosphorus-hotel',
+    title: 'Boğaz Manzaralı 1 Gece Konaklama',
+    description: '5 yıldızlı otelde 1 gece, Boğaz manzaralı oda, kahvaltı dahil.',
+    businessId: 'bosphorus-hotel',
+    businessName: 'Bosphorus Palace Hotel',
+    cityId: 'istanbul', district: 'Beşiktaş', categoryId: 'seyahat',
+    price: 3400, originalPrice: 5200, rating: 4.8,
+    images: [IMG('photo-1551882547-ff40c63fe5fa', 11)],
+    quota: 50, soldCount: 14, isFeatured: true, daysLeft: 40,
+  },
+  // ── Ankara ───────────────────────────────────────────────────────
+  {
+    id: 'cankaya-steak',
+    title: 'Çankaya Steakhouse Menü (2 Kişi)',
+    description: 'Kuru dinlendirilmiş T-bone, özel soslu garnitür ve tatlı dahil 3 kap.',
+    businessId: 'cankaya-steak',
+    businessName: 'Çankaya Steakhouse',
+    cityId: 'ankara', district: 'Çankaya', categoryId: 'restoran',
+    price: 1550, originalPrice: 2300, rating: 4.7,
+    images: [IMG('photo-1551183053-bf91a1d81141', 12)],
+    quota: 60, soldCount: 19, isFeatured: false, daysLeft: 25,
+  },
+  {
+    id: 'mavi-spa',
+    title: 'Hamam + Köpük + Masaj Paketi',
+    description: 'Geleneksel Türk hamamı deneyimi ile 45 dakika aromaterapi masajı.',
+    businessId: 'ankara-spa-mavi',
+    businessName: 'Mavi Wellness Spa',
+    cityId: 'ankara', district: 'Çankaya', categoryId: 'wellness',
+    price: 720, originalPrice: 1200, rating: 4.8,
+    images: [IMG('photo-1540555700478-4be289fbecef', 13)],
+    quota: 70, soldCount: 28, isFeatured: true, daysLeft: 18,
+  },
+  // ── İzmir ────────────────────────────────────────────────────────
+  {
+    id: 'alsancak-kahvalti',
+    title: 'Ege Usulü Kahvaltı Tabağı',
+    description: 'Ege otları, zeytinyağlılar ve ev yapımı börekler eşliğinde zengin kahvaltı.',
+    businessId: 'alsancak-kahve',
+    businessName: 'Alsancak Coffee House',
+    cityId: 'izmir', district: 'Konak', categoryId: 'restoran',
+    price: 350, originalPrice: 550, rating: 4.6,
+    images: [IMG('photo-1493770348161-369560ae357d', 14)],
+    quota: 150, soldCount: 72, isFeatured: false, daysLeft: 30,
+  },
+  {
+    id: 'cesme-resort',
+    title: 'Çeşme Resort 2 Gece Full Pansiyon',
+    description: 'Denize sıfır 5 yıldızlı resortta 2 kişilik tam pansiyon konaklama.',
+    businessId: 'cesme-resort',
+    businessName: 'Çeşme Beach Resort',
+    cityId: 'izmir', district: 'Çeşme', categoryId: 'seyahat',
+    price: 6800, originalPrice: 10500, rating: 4.9,
+    images: [IMG('photo-1520250497591-112f2f40a3f4', 15)],
+    quota: 40, soldCount: 11, isFeatured: true, daysLeft: 50,
+  },
+  {
+    id: 'asana-yoga',
+    title: 'Aylık Sınırsız Yoga & Pilates',
+    description: 'Tüm grup derslerine 30 gün sınırsız katılım + 1 özel seans.',
+    businessId: 'izmir-yoga',
+    businessName: 'Asana Yoga & Pilates',
+    cityId: 'izmir', district: 'Karşıyaka', categoryId: 'spor',
+    price: 890, originalPrice: 1600, rating: 4.8,
+    images: [IMG('photo-1544367567-0f2fcb009e0b', 16)],
+    quota: 50, soldCount: 19, isFeatured: false, daysLeft: 22,
+  },
+  // ── Antalya ──────────────────────────────────────────────────────
+  {
+    id: 'lara-beach-paket',
+    title: 'Lara Beach Ultra Her Şey Dahil (3 Gün)',
+    description: 'Deniz manzaralı oda, ultra her şey dahil konsept, spa kredisi.',
+    businessId: 'lara-beach',
+    businessName: 'Lara Beach Resort & Spa',
+    cityId: 'antalya', district: 'Muratpaşa', categoryId: 'seyahat',
+    price: 9800, originalPrice: 15000, rating: 4.9,
+    images: [IMG('photo-1520250497591-112f2f40a3f4', 17)],
+    quota: 30, soldCount: 8, isFeatured: true, daysLeft: 60,
+  },
+  {
+    id: 'kaleici-meyhane',
+    title: 'Kaleiçi Meyhanesi Akşam Yemeği',
+    description: 'Tarihi Kaleiçi\'nde 2 kişilik geleneksel meze ziyafeti.',
+    businessId: 'kaleici-meyhane',
+    businessName: 'Kaleiçi Meyhanesi',
+    cityId: 'antalya', district: 'Muratpaşa', categoryId: 'restoran',
+    price: 890, originalPrice: 1350, rating: 4.7,
+    images: [IMG('photo-1555396273-367ea4eb4db5', 18)],
+    quota: 80, soldCount: 24, isFeatured: false, daysLeft: 30,
+  },
+  {
+    id: 'core-fitness',
     title: 'Aylık Sınırsız Fitness Üyeliği',
-    slug: 'aylik-sinirsiz-fitness-uyeligi',
-    description:
-      'Premium fitness kulübünde 30 günlük sınırsız giriş. Kardiyo, ağırlık, grup dersleri dahil.',
-    businessId: 'demo-restaurant',
-    cityId: 'bursa',
-    categoryId: 'spor',
-    price: 699,
-    originalPrice: 1200,
-    images: [
-      'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1200&q=80',
-    ],
-    quota: 0,
-    soldCount: 45,
-    isActive: true,
-    isFeatured: false,
-    expiresAt: new Date(now + 45 * DAY),
+    description: 'Premium fitness kulübünde 30 gün sınırsız giriş + 2 PT seansı.',
+    businessId: 'antalya-fitness',
+    businessName: 'Core Fitness Club',
+    cityId: 'antalya', district: 'Konyaaltı', categoryId: 'spor',
+    price: 699, originalPrice: 1200, rating: 4.6,
+    images: [IMG('photo-1534438327276-14e5300c3a48', 19)],
+    quota: 0, soldCount: 45, isFeatured: false, daysLeft: 45,
+  },
+  // ── Eskişehir ────────────────────────────────────────────────────
+  {
+    id: 'odunpazari-kahvalti',
+    title: 'Odunpazarı Köşkü Kahvaltısı',
+    description: 'Tarihi konakta 2 kişilik zengin Eskişehir kahvaltısı, çilbirli çay eşliğinde.',
+    businessId: 'odunpazari-cafe',
+    businessName: 'Odunpazarı Köşkü',
+    cityId: 'eskisehir', district: 'Odunpazarı', categoryId: 'restoran',
+    price: 380, originalPrice: 600, rating: 4.7,
+    images: [IMG('photo-1482049016688-2d3e1b311543', 20)],
+    quota: 100, soldCount: 38, isFeatured: false, daysLeft: 18,
+  },
+  {
+    id: 'eski-termal',
+    title: 'Termal Spa + Masaj Günü',
+    description: 'Eskişehir termal sularında tam gün kullanım + 60 dk klasik masaj.',
+    businessId: 'eski-wellness',
+    businessName: 'Termal Wellness Center',
+    cityId: 'eskisehir', district: 'Tepebaşı', categoryId: 'wellness',
+    price: 520, originalPrice: 850, rating: 4.8,
+    images: [IMG('photo-1540555700478-4be289fbecef', 21)],
+    quota: 120, soldCount: 41, isFeatured: true, daysLeft: 35,
   },
 ];
 
@@ -205,18 +391,27 @@ async function seed() {
     const { id, ...data } = biz;
     batch.set(
       db.collection('businesses').doc(id),
-      { ...data, createdAt: FieldValue.serverTimestamp() },
+      {
+        ownerId: 'demo-owner-uid',
+        isActive: true,
+        contactEmail: `info@${id}.com`,
+        phone: '+90 224 000 00 00',
+        ...data,
+        createdAt: FieldValue.serverTimestamp(),
+      },
       { merge: true }
     );
   }
 
-  for (const camp of demoCampaigns) {
-    const { id, expiresAt, ...rest } = camp;
+  for (const c of demoCampaigns) {
+    const { id, daysLeft, ...rest } = c;
     batch.set(
       db.collection('campaigns').doc(id),
       {
         ...rest,
-        expiresAt: Timestamp.fromDate(expiresAt),
+        slug: id,
+        isActive: true,
+        expiresAt: Timestamp.fromDate(new Date(now + daysLeft * DAY)),
         createdAt: FieldValue.serverTimestamp(),
         updatedAt: FieldValue.serverTimestamp(),
       },

@@ -4,7 +4,7 @@ import { Navbar, Footer } from '../components/layout';
 
 export default function RootLayout() {
   return (
-    <div className="flex min-h-screen flex-col bg-surface">
+    <div className="flex min-h-screen flex-col overflow-x-hidden bg-surface">
       <Navbar />
       <Outlet />
       <Footer />

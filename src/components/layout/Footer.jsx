@@ -2,11 +2,11 @@ import { Link } from 'react-router-dom';
 
 const COLUMNS = [
   {
-    heading: 'Platform',
+    heading: 'İş Ortaklığı',
     links: [
-      { label: 'Kampanyalar', to: '/kampanyalar' },
       { label: 'İşletme Başvurusu', to: '/isletme-basvurusu' },
-      { label: 'Hediye Kartları', to: '/kampanyalar' },
+      { label: 'İşletme Girişi', to: '/isletme' },
+      { label: 'Bize Ulaşın', href: 'mailto:isletme@grp.com.tr' },
     ],
   },
   {
@@ -36,7 +36,7 @@ export default function Footer() {
 
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
-            <Link to="/" className="font-headline italic text-2xl text-primary-container tracking-tight">
+            <Link to="/" className="font-headline font-extrabold text-2xl text-primary-container tracking-tight">
               GRP
             </Link>
             <p className="mt-4 text-sm font-label leading-relaxed text-on-dark-surface/55 max-w-xs">

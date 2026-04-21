@@ -36,7 +36,7 @@ export default function ForgotPasswordPage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h2 className="mb-2 font-headline italic text-2xl text-on-surface">E-posta Gönderildi</h2>
+          <h2 className="mb-2 font-headline font-extrabold text-2xl text-on-surface">E-posta Gönderildi</h2>
           <p className="mb-6 font-label text-sm text-on-surface-variant leading-relaxed">
             Şifre sıfırlama bağlantısı e-posta adresinize gönderildi.
             Gelen kutunuzu kontrol edin.
@@ -53,7 +53,7 @@ export default function ForgotPasswordPage() {
     <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-surface-container-low px-4 py-12">
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
-          <h1 className="font-headline italic text-3xl text-on-surface">Şifremi Unuttum</h1>
+          <h1 className="font-headline font-extrabold text-3xl text-on-surface">Şifremi Unuttum</h1>
           <p className="mt-2 font-label text-sm text-on-surface-variant">
             Kayıtlı e-posta adresine şifre sıfırlama bağlantısı gönderilecektir.
           </p>

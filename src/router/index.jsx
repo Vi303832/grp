@@ -15,12 +15,6 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
 
-      // Kampanyalar — listeleme
-      {
-        path: 'kampanyalar',
-        lazy: () => import('../features/campaigns/CampaignsPage'),
-      },
-
       // Misafir rotaları (giriş yapmışsa yönlendirme)
       {
         path: 'giris',

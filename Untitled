@@ -1,10 +1,9 @@
-{
-  "mcpServers": {
-    "stitch": {
-      "url": "https://stitch.googleapis.com/mcp",
-      "headers": {
-        "X-Goog-Api-Key": "AQ.Ab8RN6IMMszkvAxJrwpoX-RCKmFBXtkWCRFjw_DuVZzIDF1pOA"
-      }
-    }
-  }
-}
+Uncaught FirebaseError: Firebase: Error (auth/invalid-api-key).
+    at so (vendor-firebase-CiOEAC7U.js:405:505)
+    at M (vendor-firebase-CiOEAC7U.js:405:553)
+    at tt.instanceFactory (vendor-firebase-CiOEAC7U.js:1515:395)
+    at df.getOrInitializeService (vendor-firebase-CiOEAC7U.js:195:2722)
+    at df.initialize (vendor-firebase-CiOEAC7U.js:195:2109)
+    at nm (vendor-firebase-CiOEAC7U.js:810:167)
+    at WT (vendor-firebase-CiOEAC7U.js:1530:409)
+    at index-Bt-iRFFK.js:202:1438
