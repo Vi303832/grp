@@ -1,17 +1,19 @@
 import { cn } from '../../lib/utils';
 
 const variants = {
-  primary: 'bg-orange-500 hover:bg-orange-600 text-white',
-  secondary: 'bg-gray-100 hover:bg-gray-200 text-gray-800',
-  outline: 'border border-orange-500 text-orange-500 hover:bg-orange-50',
-  ghost: 'text-gray-600 hover:bg-gray-100',
-  danger: 'bg-red-500 hover:bg-red-600 text-white',
+  primary: 'bg-primary hover:bg-on-primary-fixed-variant text-on-primary',
+  secondary: 'bg-secondary-container hover:bg-secondary-fixed-dim text-on-secondary-container',
+  outline: 'border border-primary text-primary hover:bg-primary-fixed/40',
+  ghost: 'text-on-surface-variant hover:bg-surface-container',
+  'ghost-white': 'border border-white/40 text-white hover:bg-white/10',
+  dark: 'bg-dark-surface text-on-dark-surface hover:bg-dark-surface-raised',
+  danger: 'bg-error hover:opacity-90 text-on-error',
 };
 
 const sizes = {
-  sm: 'px-3 py-1.5 text-sm',
-  md: 'px-4 py-2 text-sm',
-  lg: 'px-6 py-3 text-base',
+  sm: 'px-4 py-1.5 text-sm',
+  md: 'px-5 py-2 text-sm',
+  lg: 'px-7 py-3 text-base',
 };
 
 export default function Button({
@@ -26,7 +28,7 @@ export default function Button({
   return (
     <button
       className={cn(
-        'inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed',
+        'inline-flex items-center justify-center gap-2 rounded-full font-label font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:ring-offset-2 focus:ring-offset-surface disabled:opacity-50 disabled:cursor-not-allowed',
         variants[variant],
         sizes[size],
         className,

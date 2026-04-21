@@ -251,7 +251,7 @@ pending ──► paid ──► coupon_issued ──► [kupon: active]
 - [ ] Firebase Custom Claims ile rol atama: `user`, `business`, `admin`
 - [ ] Firestore Security Rules v1 (temel okuma/yazma kuralları)
 - [ ] Firestore başlangıç verileri: şehirler (Bursa), kategoriler
-- [ ] Zustand auth store
+- [ ] Zustand auth store 
 
 ---
 

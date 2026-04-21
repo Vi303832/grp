@@ -39,17 +39,19 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-gray-50 px-4 py-12">
+    <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-surface-container-low px-4 py-12">
       <div className="w-full max-w-md">
-        <div className="rounded-2xl border border-gray-100 bg-white p-8 shadow-sm">
-          <h1 className="mb-1 text-2xl font-bold text-gray-900">Giriş Yap</h1>
-          <p className="mb-6 text-sm text-gray-500">
+        <div className="mb-8 text-center">
+          <h1 className="font-headline italic text-3xl text-on-surface">Hoş Geldiniz</h1>
+          <p className="mt-2 font-label text-sm text-on-surface-variant">
             Hesabın yok mu?{' '}
-            <Link to="/kayit" className="font-medium text-orange-500 hover:underline">
+            <Link to="/kayit" className="font-semibold text-primary hover:underline underline-offset-2">
               Kayıt Ol
             </Link>
           </p>
+        </div>
 
+        <div className="rounded-2xl border border-outline-variant/20 bg-surface-container-lowest p-8 shadow-sm">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <Input
               label="E-posta"
@@ -71,7 +73,7 @@ export default function LoginPage() {
             <div className="text-right">
               <Link
                 to="/sifremi-unuttum"
-                className="text-xs text-gray-500 hover:text-orange-500"
+                className="text-xs font-label text-on-surface-variant hover:text-primary transition-colors"
               >
                 Şifremi unuttum
               </Link>

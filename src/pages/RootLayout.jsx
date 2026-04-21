@@ -4,7 +4,7 @@ import { Navbar, Footer } from '../components/layout';
 
 export default function RootLayout() {
   return (
-    <div className="flex min-h-screen flex-col bg-gray-50">
+    <div className="flex min-h-screen flex-col bg-surface">
       <Navbar />
       <Outlet />
       <Footer />
@@ -12,8 +12,8 @@ export default function RootLayout() {
         position="top-right"
         toastOptions={{
           duration: 4000,
-          style: { fontSize: '14px' },
-          success: { iconTheme: { primary: '#f97316', secondary: '#fff' } },
+          style: { fontSize: '14px', fontFamily: 'Manrope, sans-serif', background: '#fcf9f4', color: '#1c1c19', border: '1px solid #c7c7bc' },
+          success: { iconTheme: { primary: '#58614e', secondary: '#fff' } },
         }}
       />
     </div>

@@ -7,7 +7,7 @@ import { Spinner } from '../components/ui';
  * allowedRoles belirtilmişse ilgili rol de kontrol edilir.
  */
 export default function ProtectedRoute({ children, allowedRoles }) {
-  const { user, userProfile, loading } = useAuthStore();
+  const { user, role, loading } = useAuthStore();
   const location = useLocation();
 
   if (loading) {
@@ -22,7 +22,7 @@ export default function ProtectedRoute({ children, allowedRoles }) {
     return <Navigate to="/giris" state={{ from: location }} replace />;
   }
 
-  if (allowedRoles && !allowedRoles.includes(userProfile?.role)) {
+  if (allowedRoles && !allowedRoles.includes(role)) {
     return <Navigate to="/" replace />;
   }
 

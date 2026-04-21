@@ -54,17 +54,19 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-gray-50 px-4 py-12">
+    <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-surface-container-low px-4 py-12">
       <div className="w-full max-w-md">
-        <div className="rounded-2xl border border-gray-100 bg-white p-8 shadow-sm">
-          <h1 className="mb-1 text-2xl font-bold text-gray-900">Kayıt Ol</h1>
-          <p className="mb-6 text-sm text-gray-500">
+        <div className="mb-8 text-center">
+          <h1 className="font-headline italic text-3xl text-on-surface">Hesap Oluştur</h1>
+          <p className="mt-2 font-label text-sm text-on-surface-variant">
             Zaten hesabın var mı?{' '}
-            <Link to="/giris" className="font-medium text-orange-500 hover:underline">
+            <Link to="/giris" className="font-semibold text-primary hover:underline underline-offset-2">
               Giriş Yap
             </Link>
           </p>
+        </div>
 
+        <div className="rounded-2xl border border-outline-variant/20 bg-surface-container-lowest p-8 shadow-sm">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <Input
               label="Ad Soyad"

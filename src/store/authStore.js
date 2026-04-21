@@ -13,16 +13,20 @@ import { auth, db } from '../lib/firebase';
 const useAuthStore = create((set, get) => ({
   user: null,
   userProfile: null,
+  role: null,
   loading: true,
 
   // Firebase Auth'u dinler — App mount'ta çağrılır
   init: () => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
-        const profile = await get()._fetchProfile(firebaseUser.uid);
-        set({ user: firebaseUser, userProfile: profile, loading: false });
+        const [profile, role] = await Promise.all([
+          get()._fetchProfile(firebaseUser.uid),
+          get()._fetchRole(firebaseUser, false),
+        ]);
+        set({ user: firebaseUser, userProfile: profile, role, loading: false });
       } else {
-        set({ user: null, userProfile: null, loading: false });
+        set({ user: null, userProfile: null, role: null, loading: false });
       }
     });
     return unsubscribe;
@@ -34,6 +38,16 @@ const useAuthStore = create((set, get) => ({
       return snap.exists() ? snap.data() : null;
     } catch {
       return null;
+    }
+  },
+
+  // Custom claim'deki role bilgisini okur. forceRefresh=true → token yenilenir
+  _fetchRole: async (firebaseUser, forceRefresh = false) => {
+    try {
+      const tokenResult = await firebaseUser.getIdTokenResult(forceRefresh);
+      return tokenResult.claims.role ?? 'user';
+    } catch {
+      return 'user';
     }
   },
 
@@ -53,20 +67,23 @@ const useAuthStore = create((set, get) => ({
     };
 
     await setDoc(doc(db, 'users', user.uid), profile);
-    set({ user, userProfile: profile });
+    set({ user, userProfile: profile, role: 'user' });
     return user;
   },
 
   login: async ({ email, password }) => {
     const { user } = await signInWithEmailAndPassword(auth, email, password);
-    const profile = await get()._fetchProfile(user.uid);
-    set({ user, userProfile: profile });
+    const [profile, role] = await Promise.all([
+      get()._fetchProfile(user.uid),
+      get()._fetchRole(user, false),
+    ]);
+    set({ user, userProfile: profile, role });
     return user;
   },
 
   signOut: async () => {
     await firebaseSignOut(auth);
-    set({ user: null, userProfile: null });
+    set({ user: null, userProfile: null, role: null });
   },
 
   resetPassword: async (email) => {
@@ -79,6 +96,15 @@ const useAuthStore = create((set, get) => ({
     if (!user) return;
     const profile = await get()._fetchProfile(user.uid);
     set({ userProfile: profile });
+  },
+
+  // Custom claim'leri yeniden yükler (admin rol atadıktan sonra client'ta çağrılır)
+  refreshClaims: async () => {
+    const { user } = get();
+    if (!user) return null;
+    const role = await get()._fetchRole(user, true);
+    set({ role });
+    return role;
   },
 }));
 

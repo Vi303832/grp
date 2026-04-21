@@ -14,17 +14,17 @@ function UserPanelLayout() {
       <PageWrapper>
         <div className="flex flex-col gap-8 md:flex-row">
           <aside className="md:w-56 shrink-0">
-            <nav className="flex flex-row gap-1 rounded-xl border border-gray-100 bg-white p-2 shadow-sm md:flex-col">
+            <nav className="flex flex-row gap-1 rounded-xl border border-outline-variant/20 bg-surface-container-lowest p-2 shadow-sm md:flex-col">
               {links.map(({ to, label, end }) => (
                 <NavLink
                   key={to}
                   to={to}
                   end={end}
                   className={({ isActive }) =>
-                    `rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                    `rounded-lg px-3 py-2.5 text-sm font-label font-medium transition-colors ${
                       isActive
-                        ? 'bg-orange-50 text-orange-600'
-                        : 'text-gray-600 hover:bg-gray-50'
+                        ? 'bg-primary-fixed text-primary'
+                        : 'text-on-surface-variant hover:bg-surface-container'
                     }`
                   }
                 >

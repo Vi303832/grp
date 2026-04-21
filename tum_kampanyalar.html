@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&amp;family=Manrope:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary-container": "#a4ae97",
+              "on-tertiary": "#ffffff",
+              "error-container": "#ffdad6",
+              "on-error": "#ffffff",
+              "on-surface": "#1c1c19",
+              "on-tertiary-container": "#5b3435",
+              "secondary-container": "#f0e0ca",
+              "inverse-on-surface": "#f3f0eb",
+              "primary": "#58614e",
+              "tertiary-fixed": "#ffdad9",
+              "surface-tint": "#58614e",
+              "tertiary-container": "#d39d9d",
+              "on-tertiary-fixed": "#311113",
+              "on-primary": "#ffffff",
+              "primary-fixed": "#dce6cd",
+              "on-surface-variant": "#46473f",
+              "primary-fixed-dim": "#c0cab2",
+              "on-secondary-container": "#6e6351",
+              "surface-variant": "#e5e2dd",
+              "surface-bright": "#fcf9f4",
+              "surface-container-high": "#ebe8e3",
+              "background": "#fcf9f4",
+              "outline": "#77786f",
+              "surface-dim": "#dcdad5",
+              "on-tertiary-fixed-variant": "#643b3c",
+              "tertiary": "#7f5253",
+              "inverse-primary": "#c0cab2",
+              "inverse-surface": "#31302d",
+              "on-primary-container": "#384230",
+              "surface": "#fcf9f4",
+              "on-primary-fixed-variant": "#404a37",
+              "secondary-fixed-dim": "#d3c4af",
+              "secondary": "#685d4c",
+              "on-primary-fixed": "#161e0f",
+              "surface-container-low": "#f6f3ee",
+              "tertiary-fixed-dim": "#f2b8b8",
+              "surface-container": "#f0ede8",
+              "surface-container-lowest": "#ffffff",
+              "on-secondary-fixed": "#221a0d",
+              "error": "#ba1a1a",
+              "surface-container-highest": "#e5e2dd",
+              "on-error-container": "#93000a",
+              "on-background": "#1c1c19",
+              "outline-variant": "#c7c7bc",
+              "secondary-fixed": "#f0e0ca",
+              "on-secondary": "#ffffff",
+              "on-secondary-fixed-variant": "#4f4535"
+            },
+            fontFamily: {
+              "headline": ["Noto Serif"],
+              "body": ["Manrope"],
+              "label": ["Manrope"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Manrope', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .font-serif { font-family: 'Noto Serif', serif; }
+        .font-noto-serif { font-family: 'Noto Serif', serif; }
+        .font-manrope { font-family: 'Manrope', sans-serif; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface">
+<!-- Top Navigation Bar -->
+<nav class="fixed top-0 w-full z-50 bg-[#fcf9f4]/80 dark:bg-stone-900/80 backdrop-blur-md shadow-[0_12px_32px_rgba(28,28,25,0.05)] transition-all duration-300">
+<div class="flex justify-between items-center px-8 py-6 max-w-screen-2xl mx-auto">
+<div class="text-2xl font-serif text-[#58614e] dark:text-[#a4ae97] tracking-tighter">
+                The Ethereal Sanctuary
+            </div>
+<div class="hidden md:flex items-center gap-10">
+<a class="font-manrope text-sm tracking-wide text-[#1c1c19]/70 dark:text-[#fcf9f4]/70 hover:text-[#58614e] dark:hover:text-[#a4ae97] transition-colors duration-300" href="#">Treatments</a>
+<a class="font-manrope text-sm tracking-wide text-[#58614e] dark:text-[#fcf9f4] border-b border-[#58614e]/30 pb-1 hover:text-[#58614e] dark:hover:text-[#a4ae97] transition-colors duration-300" href="#">Campaigns</a>
+<a class="font-manrope text-sm tracking-wide text-[#1c1c19]/70 dark:text-[#fcf9f4]/70 hover:text-[#58614e] dark:hover:text-[#a4ae97] transition-colors duration-300" href="#">About</a>
+<a class="font-manrope text-sm tracking-wide text-[#1c1c19]/70 dark:text-[#fcf9f4]/70 hover:text-[#58614e] dark:hover:text-[#a4ae97] transition-colors duration-300" href="#">Contact</a>
+</div>
+<button class="bg-primary text-on-primary px-8 py-2.5 rounded-full font-manrope text-sm font-semibold hover:scale-95 duration-200 ease-in-out">
+                Book Now
+            </button>
+</div>
+</nav>
+<main class="pt-32">
+<!-- Hero Header -->
+<header class="max-w-7xl mx-auto px-8 mb-20 text-center">
+<h1 class="font-noto-serif italic text-5xl md:text-7xl text-primary tracking-tight mb-6">Seasonal Offerings</h1>
+<p class="font-manrope text-lg text-on-surface-variant max-w-2xl mx-auto leading-relaxed">
+                Curated experiences designed to restore balance and ignite inner radiance. Each selection is a bespoke journey into tranquility.
+            </p>
+</header>
+<!-- Filters Section -->
+<section class="max-w-7xl mx-auto px-8 mb-16">
+<div class="flex flex-wrap justify-center gap-4">
+<button class="px-8 py-2 rounded-full border border-primary bg-primary text-on-primary font-manrope text-sm transition-all">All Offers</button>
+<button class="px-8 py-2 rounded-full border border-outline-variant text-on-surface-variant font-manrope text-sm hover:border-primary hover:text-primary transition-all">Skincare</button>
+<button class="px-8 py-2 rounded-full border border-outline-variant text-on-surface-variant font-manrope text-sm hover:border-primary hover:text-primary transition-all">Massage</button>
+<button class="px-8 py-2 rounded-full border border-outline-variant text-on-surface-variant font-manrope text-sm hover:border-primary hover:text-primary transition-all">Bridal</button>
+<button class="px-8 py-2 rounded-full border border-outline-variant text-on-surface-variant font-manrope text-sm hover:border-primary hover:text-primary transition-all">Wellness Retreats</button>
+</div>
+</section>
+<!-- Campaigns Bento Grid -->
+<section class="max-w-7xl mx-auto px-8 pb-32">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-10">
+<!-- Large Feature Card -->
+<div class="md:col-span-8 group relative overflow-hidden rounded-xl bg-surface-container-low">
+<div class="aspect-[16/9] overflow-hidden">
+<img alt="Luxury Spa Treatment" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Peaceful woman receiving facial massage in spa" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBabKUWvZgRmuNzv2ERfn1a9wW8I1SjW03MMHHX6iNRPmsh1kuvlUcz9lmnYjWilETqxwxQJ4Gjue2-QtpMgZSm98JoKW6onQe7puApuJE8gIDhlUlajx0FeOQrXhCOsZ8-1ZPAmqm5zsnTd1ha2-PW1htZzs1_uL8RKjI7-wn1AV8QtT6DDc8A2dyU4FhBLEiT9fa-MjZZMJdzmOMWoZFOb2jRsjftCn6Sbuf13k5v3r0obGSwC0IMFgbjHJunDcJebGES9178-cQ"/>
+</div>
+<div class="p-10 flex flex-col justify-between">
+<div>
+<div class="flex items-center gap-3 mb-4">
+<span class="text-xs uppercase tracking-widest text-primary font-bold">Featured Campaign</span>
+<div class="h-px w-12 bg-outline-variant"></div>
+</div>
+<h2 class="font-noto-serif text-4xl text-on-surface mb-4">The Midweek Serenity Escape</h2>
+<p class="font-manrope text-on-surface-variant text-lg max-w-xl mb-8 leading-relaxed">
+                                Reclaim your peace with our signature 90-minute aromatherapy journey and a private herbal steam session.
+                            </p>
+</div>
+<div class="flex items-end justify-between">
+<div class="flex flex-col">
+<span class="text-on-surface-variant line-through text-sm">$280</span>
+<span class="text-3xl font-noto-serif text-primary">$195</span>
+</div>
+<button class="flex items-center gap-2 font-manrope font-semibold text-primary hover:gap-4 transition-all duration-300">
+                                Learn More <span class="material-symbols-outlined text-lg">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Small Card 1 -->
+<div class="md:col-span-4 group flex flex-col bg-surface-container-lowest rounded-xl shadow-[0_12px_32px_rgba(28,28,25,0.05)] overflow-hidden">
+<div class="aspect-square overflow-hidden">
+<img alt="Bridal Preparation" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Soft white lace and flowers on table" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDWJ4hRq0TSARuLC5o0bZTRW8F_4HaOLCCPAEnsyqr6Muh7WRQnRsij0EsWYUU1lsbEaSjuuh1k-y-iy3CSVyAn94m4rsMEz2qyqGI1URl5xk9zH29vNqSd6z8tHU6fOFW3O8OSNnhKJCOLFcDeJufDLZ8JgLJzCaxmuEptEi-SsT9jj6px0iWus00XFVPAZ0SOpZPZJxBhFWLpL3WJvZLlP9G1NtNYdaiXiRHgSoQSETVLXQJr7GNpFtzdExVygJpDFIMj-AFdgs"/>
+</div>
+<div class="p-8 flex-1 flex flex-col">
+<h3 class="font-noto-serif text-2xl text-on-surface mb-3">Bridal Glow Package</h3>
+<p class="font-manrope text-on-surface-variant text-sm mb-8 leading-relaxed">
+                            A 4-week curated program featuring luminosity facials and silk-peel body polishing.
+                        </p>
+<div class="mt-auto pt-6 border-t border-outline-variant/20 flex items-center justify-between">
+<div class="flex flex-col">
+<span class="text-xs text-on-surface-variant line-through">$850</span>
+<span class="text-xl font-noto-serif text-primary">$640</span>
+</div>
+<button class="p-3 bg-secondary-container text-on-secondary-container rounded-full hover:bg-primary hover:text-on-primary transition-colors duration-300">
+<span class="material-symbols-outlined block">add</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Small Card 2 -->
+<div class="md:col-span-4 group flex flex-col bg-surface-container-lowest rounded-xl shadow-[0_12px_32px_rgba(28,28,25,0.05)] overflow-hidden">
+<div class="aspect-square overflow-hidden">
+<img alt="Zen Stones" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Smooth volcanic stones in water and flowers" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAIeuke514OVHHTN5RPoahiVdsL8sAFMMrKsAHmL4A2kOw4tpajULDjKyXNi5fduUBLZtWOmeNaKo1TFWxUy7f-k_dAM1Hu-QfwZF0dkCbplX3x1sYy1zPoaDeQn89DcU3Qb_ySFq4pXtG9caprRBIYyeUIIzcE8IB19H-tW9GYoOBR5_YjEnHQCUo5PzWe4ra1t_iwlu_abFliiwJ58uykppiYsnaKKDU8YGa1Scs0bO-BG7bCXF6FrVINJ-P_Z54ACLjsceGBWGI"/>
+</div>
+<div class="p-8 flex-1 flex flex-col">
+<h3 class="font-noto-serif text-2xl text-on-surface mb-3">Stone Therapy Ritual</h3>
+<p class="font-manrope text-on-surface-variant text-sm mb-8 leading-relaxed">
+                            Melt away tension with heated basalt stones and our signature botanical oil blends.
+                        </p>
+<div class="mt-auto pt-6 border-t border-outline-variant/20 flex items-center justify-between">
+<div class="flex flex-col">
+<span class="text-xs text-on-surface-variant line-through">$210</span>
+<span class="text-xl font-noto-serif text-primary">$155</span>
+</div>
+<button class="p-3 bg-secondary-container text-on-secondary-container rounded-full hover:bg-primary hover:text-on-primary transition-colors duration-300">
+<span class="material-symbols-outlined block">add</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Medium Card Overhang Style -->
+<div class="md:col-span-8 flex flex-col md:flex-row bg-surface-container-low rounded-xl overflow-hidden">
+<div class="md:w-1/2 overflow-hidden">
+<img alt="Luxury Bath" class="w-full h-full object-cover" data-alt="Luxury copper bathtub filled with petals" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4opsxUB-GtC5HZpmxuZzpy7ehp9s14u92WIH4PPinbFbjJnJVQhMAy5kcno97vMwVh_LNXtjF59UsrqaDN05kI_hLEhXOoqhgYDG7NYG0JNwriApXi4m78EGh4L3Qv7ur8rhvdXi5Z5WtmaeKiJ_WwBPm-qqyChK0BW6SgKFaKuSEfNjdEvIt6T9gH6zFtEn4eUsAlXQm32MiujctG5O3MQwdo74ZrtIaigWu7E7RlcJDurq3nNq_Oz2G0a06wIlccgqTuUaGfoE"/>
+</div>
+<div class="md:w-1/2 p-10 flex flex-col justify-center">
+<div class="inline-block px-3 py-1 bg-[#c0cab2]/30 text-primary text-[10px] font-bold uppercase tracking-widest rounded-sm mb-6 w-fit">Seasonal Exclusive</div>
+<h3 class="font-noto-serif text-3xl text-on-surface mb-4">Floral Bathing Sanctuary</h3>
+<p class="font-manrope text-on-surface-variant mb-8 text-sm leading-loose">
+                            An immersion of the senses. Includes a 30-minute soak in precious oils followed by a revitalizing mineral massage.
+                        </p>
+<div class="flex items-center justify-between">
+<div class="flex gap-4 items-center">
+<span class="text-2xl font-noto-serif text-primary">$120</span>
+<span class="text-sm text-on-surface-variant line-through">$180</span>
+</div>
+<button class="text-primary font-bold text-sm underline underline-offset-8 decoration-outline-variant hover:decoration-primary transition-all">Details</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Newsletter Tonal Layering -->
+<section class="bg-surface-container-low py-24">
+<div class="max-w-3xl mx-auto px-8 text-center">
+<span class="material-symbols-outlined text-primary text-4xl mb-6">spa</span>
+<h2 class="font-noto-serif italic text-4xl text-on-surface mb-6">Join the Inner Circle</h2>
+<p class="font-manrope text-on-surface-variant mb-10 leading-relaxed">
+                    Be the first to receive invitation-only seasonal offers and wellness insights from our sanctuary.
+                </p>
+<form class="flex flex-col md:flex-row gap-4">
+<input class="flex-1 bg-surface border-none rounded-full px-8 py-4 text-sm focus:ring-1 focus:ring-primary font-manrope outline-none shadow-sm" placeholder="Email Address" type="email"/>
+<button class="bg-primary text-on-primary px-10 py-4 rounded-full font-manrope text-sm font-semibold hover:opacity-90 transition-opacity">
+                        Subscribe
+                    </button>
+</form>
+</div>
+</section>
+</main>
+<!-- Footer Component -->
+<footer class="bg-[#f6f3ee] dark:bg-stone-950 w-full pt-24 pb-12">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-12 px-12 max-w-7xl mx-auto">
+<div class="col-span-1">
+<div class="font-serif text-xl text-[#58614e] mb-6">The Ethereal Sanctuary</div>
+<p class="font-manrope text-sm tracking-wide leading-relaxed text-[#1c1c19]/60 dark:text-[#fcf9f4]/60">
+                    A destination for conscious relaxation and timeless beauty rituals.
+                </p>
+</div>
+<div>
+<h4 class="font-manrope text-xs font-bold uppercase tracking-widest text-primary mb-6">Sanctuary</h4>
+<ul class="space-y-4">
+<li><a class="font-manrope text-sm text-[#1c1c19]/60 hover:text-[#58614e] transition-colors" href="#">Treatments</a></li>
+<li><a class="font-manrope text-sm text-[#58614e] font-semibold" href="#">Campaigns</a></li>
+<li><a class="font-manrope text-sm text-[#1c1c19]/60 hover:text-[#58614e] transition-colors" href="#">Gift Cards</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-manrope text-xs font-bold uppercase tracking-widest text-primary mb-6">Information</h4>
+<ul class="space-y-4">
+<li><a class="font-manrope text-sm text-[#1c1c19]/60 hover:text-[#58614e] transition-colors" href="#">Spa Etiquette</a></li>
+<li><a class="font-manrope text-sm text-[#1c1c19]/60 hover:text-[#58614e] transition-colors" href="#">Terms of Service</a></li>
+<li><a class="font-manrope text-sm text-[#1c1c19]/60 hover:text-[#58614e] transition-colors" href="#">Privacy Policy</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-manrope text-xs font-bold uppercase tracking-widest text-primary mb-6">Connect</h4>
+<ul class="space-y-4">
+<li><a class="font-manrope text-sm text-[#1c1c19]/60 hover:text-[#58614e] transition-colors" href="#">Instagram</a></li>
+<li><a class="font-manrope text-sm text-[#1c1c19]/60 hover:text-[#58614e] transition-colors" href="#">Careers</a></li>
+<li><a class="font-manrope text-sm text-[#1c1c19]/60 hover:text-[#58614e] transition-colors" href="#">Contact</a></li>
+</ul>
+</div>
+</div>
+<div class="max-w-7xl mx-auto px-12 mt-20 pt-8 border-t border-outline-variant/20">
+<p class="font-manrope text-sm text-[#1c1c19]/60 text-center md:text-left">
+                © 2024 The Ethereal Sanctuary. All rights reserved.
+            </p>
+</div>
+</footer>
+</body></html>
