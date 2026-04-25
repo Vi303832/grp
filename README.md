@@ -12,6 +12,9 @@ cd functions && npm install && cd ..
 `.env.local` dosyasını `.env.example` üzerinden oluşturup Firebase config değerlerini girin.
 Emülatörle çalışmak için `.env.local` içine `VITE_USE_EMULATORS=true` ekleyin.
 
+> [!IMPORTANT]
+> Eğer tarayıcı konsolunda `auth/invalid-api-key` hatası alıyorsanız, `.env.local` dosyanızın oluşturulduğundan ve içine geçerli API anahtarlarının girildiğinden emin olun.
+
 ## Geliştirme
 
 ```bash
