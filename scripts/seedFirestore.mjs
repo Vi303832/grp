@@ -21,53 +21,53 @@ const db = getFirestore();
 
 // ─── Şehirler ────────────────────────────────────────────────────────────────
 const cities = [
-  { id: 'bursa',     name: 'Bursa',     slug: 'bursa',     isActive: true, order: 1 },
-  { id: 'istanbul',  name: 'İstanbul',  slug: 'istanbul',  isActive: true, order: 2 },
-  { id: 'ankara',    name: 'Ankara',    slug: 'ankara',    isActive: true, order: 3 },
-  { id: 'izmir',     name: 'İzmir',     slug: 'izmir',     isActive: true, order: 4 },
-  { id: 'antalya',   name: 'Antalya',   slug: 'antalya',   isActive: true, order: 5 },
+  { id: 'bursa', name: 'Bursa', slug: 'bursa', isActive: true, order: 1 },
+  { id: 'istanbul', name: 'İstanbul', slug: 'istanbul', isActive: true, order: 2 },
+  { id: 'ankara', name: 'Ankara', slug: 'ankara', isActive: true, order: 3 },
+  { id: 'izmir', name: 'İzmir', slug: 'izmir', isActive: true, order: 4 },
+  { id: 'antalya', name: 'Antalya', slug: 'antalya', isActive: true, order: 5 },
   { id: 'eskisehir', name: 'Eskişehir', slug: 'eskisehir', isActive: true, order: 6 },
 ];
 
 // ─── Kategoriler ─────────────────────────────────────────────────────────────
 const categories = [
-  { id: 'restoran',  name: 'Restoran & Kafe',  slug: 'restoran',  icon: 'restaurant',              order: 1 },
-  { id: 'guzellik',  name: 'Güzellik & Bakım', slug: 'guzellik',  icon: 'spa',                     order: 2 },
-  { id: 'seyahat',   name: 'Seyahat & Otel',   slug: 'seyahat',   icon: 'luggage',                 order: 3 },
-  { id: 'wellness',  name: 'Sağlık & Wellness', slug: 'wellness', icon: 'self_care',               order: 4 },
-  { id: 'eglence',   name: 'Eğlence & Aktivite', slug: 'eglence', icon: 'theater_comedy',          order: 5 },
-  { id: 'spor',      name: 'Spor & Fitness',   slug: 'spor',      icon: 'fitness_center',          order: 6 },
-  { id: 'egitim',    name: 'Eğitim & Kurs',    slug: 'egitim',    icon: 'school',                  order: 7 },
-  { id: 'alisveris', name: 'Alışveriş',        slug: 'alisveris', icon: 'shopping_bag',            order: 8 },
-  { id: 'otomotiv',  name: 'Otomotiv',         slug: 'otomotiv',  icon: 'directions_car',          order: 9 },
-  { id: 'evcil',     name: 'Evcil Hayvan',     slug: 'evcil',     icon: 'pets',                    order: 10 },
-  { id: 'diger',     name: 'Diğer',            slug: 'diger',     icon: 'sell',                    order: 99 },
+  { id: 'restoran', name: 'Restoran & Kafe', slug: 'restoran', icon: 'restaurant', order: 1 },
+  { id: 'guzellik', name: 'Güzellik & Bakım', slug: 'guzellik', icon: 'spa', order: 2 },
+  { id: 'seyahat', name: 'Seyahat & Otel', slug: 'seyahat', icon: 'luggage', order: 3 },
+  { id: 'wellness', name: 'Sağlık & Wellness', slug: 'wellness', icon: 'self_care', order: 4 },
+  { id: 'eglence', name: 'Eğlence & Aktivite', slug: 'eglence', icon: 'theater_comedy', order: 5 },
+  { id: 'spor', name: 'Spor & Fitness', slug: 'spor', icon: 'fitness_center', order: 6 },
+  { id: 'egitim', name: 'Eğitim & Kurs', slug: 'egitim', icon: 'school', order: 7 },
+  { id: 'alisveris', name: 'Alışveriş', slug: 'alisveris', icon: 'shopping_bag', order: 8 },
+  { id: 'otomotiv', name: 'Otomotiv', slug: 'otomotiv', icon: 'directions_car', order: 9 },
+  { id: 'evcil', name: 'Evcil Hayvan', slug: 'evcil', icon: 'pets', order: 10 },
+  { id: 'diger', name: 'Diğer', slug: 'diger', icon: 'sell', order: 99 },
 ];
 
 // ─── Örnek İşletmeler ────────────────────────────────────────────────────────
 const demoBusinesses = [
-  { id: 'ethereal-spa',     name: 'Ethereal Sanctuary Spa',   cityId: 'bursa',     district: 'Nilüfer',       address: 'Nilüfer Kent Meydanı No:4' },
-  { id: 'bahce-cafe',       name: 'Bahçe Cafe & Restaurant',  cityId: 'bursa',     district: 'Osmangazi',     address: 'Heykel Mah. Atatürk Cd. No:1' },
-  { id: 'beef-house',       name: 'Beef House Grill',         cityId: 'bursa',     district: 'Nilüfer',       address: 'İhsaniye Mah. FSM Bulvarı No:8' },
-  { id: 'sakura-sushi',     name: 'Sakura Sushi Bar',         cityId: 'bursa',     district: 'Mudanya',       address: 'Güzelyalı Mah. Sahil Cd. No:21' },
-  { id: 'la-bella',         name: 'La Bella Pizzeria',        cityId: 'bursa',     district: 'Yıldırım',      address: 'Millet Cd. No:56' },
-  { id: 'lumen-beauty',     name: 'Lumen Beauty Clinic',      cityId: 'bursa',     district: 'Nilüfer',       address: 'Konak Mah. Merkez Cd. No:12' },
-  { id: 'elan-kuafor',      name: 'Élan Kuaför & Studio',     cityId: 'bursa',     district: 'Osmangazi',     address: 'Çekirge Cd. No:47' },
-  { id: 'uludag-termal',    name: 'Uludağ Termal Resort',     cityId: 'bursa',     district: 'Osmangazi',     address: 'Uludağ Yolu 12. Km' },
-  { id: 'cihangir-bistro',  name: 'Cihangir Bistro',          cityId: 'istanbul',  district: 'Beyoğlu',       address: 'Sıraselviler Cd. No:33' },
-  { id: 'kadikoy-dok',      name: 'Dok Balık & Mezze',        cityId: 'istanbul',  district: 'Kadıköy',       address: 'Moda Cd. No:88' },
-  { id: 'nisantasi-skin',   name: 'Nişantaşı Skin Clinic',    cityId: 'istanbul',  district: 'Şişli',         address: 'Teşvikiye Cd. No:102' },
-  { id: 'bosphorus-hotel',  name: 'Bosphorus Palace Hotel',   cityId: 'istanbul',  district: 'Beşiktaş',      address: 'Yıldız Cd. No:4' },
-  { id: 'cankaya-steak',    name: 'Çankaya Steakhouse',       cityId: 'ankara',    district: 'Çankaya',       address: 'Tunalı Hilmi Cd. No:66' },
-  { id: 'ankara-spa-mavi',  name: 'Mavi Wellness Spa',        cityId: 'ankara',    district: 'Çankaya',       address: 'Kavaklıdere Cilingir Sok. No:3' },
-  { id: 'alsancak-kahve',   name: 'Alsancak Coffee House',    cityId: 'izmir',     district: 'Konak',         address: 'Kıbrıs Şehitleri Cd. No:41' },
-  { id: 'cesme-resort',     name: 'Çeşme Beach Resort',       cityId: 'izmir',     district: 'Çeşme',         address: 'Ilıca Sahili No:1' },
-  { id: 'izmir-yoga',       name: 'Asana Yoga & Pilates',     cityId: 'izmir',     district: 'Karşıyaka',     address: 'Bostanlı Mah. No:14' },
-  { id: 'lara-beach',       name: 'Lara Beach Resort & Spa',  cityId: 'antalya',   district: 'Muratpaşa',     address: 'Lara Turizm Alanı' },
-  { id: 'kaleici-meyhane',  name: 'Kaleiçi Meyhanesi',        cityId: 'antalya',   district: 'Muratpaşa',     address: 'Kaleiçi Hıdırlık Sok. No:7' },
-  { id: 'antalya-fitness',  name: 'Core Fitness Club',        cityId: 'antalya',   district: 'Konyaaltı',     address: 'Hurma Mah. Konyaaltı Cd.' },
-  { id: 'odunpazari-cafe',  name: 'Odunpazarı Köşkü',         cityId: 'eskisehir', district: 'Odunpazarı',    address: 'Atlıhan Sok. No:19' },
-  { id: 'eski-wellness',    name: 'Termal Wellness Center',   cityId: 'eskisehir', district: 'Tepebaşı',      address: 'Hamamyolu Sk. No:3' },
+  { id: 'ethereal-spa', name: 'Ethereal Sanctuary Spa', cityId: 'bursa', district: 'Nilüfer', address: 'Nilüfer Kent Meydanı No:4' },
+  { id: 'bahce-cafe', name: 'Bahçe Cafe & Restaurant', cityId: 'bursa', district: 'Osmangazi', address: 'Heykel Mah. Atatürk Cd. No:1' },
+  { id: 'beef-house', name: 'Beef House Grill', cityId: 'bursa', district: 'Nilüfer', address: 'İhsaniye Mah. FSM Bulvarı No:8' },
+  { id: 'sakura-sushi', name: 'Sakura Sushi Bar', cityId: 'bursa', district: 'Mudanya', address: 'Güzelyalı Mah. Sahil Cd. No:21' },
+  { id: 'la-bella', name: 'La Bella Pizzeria', cityId: 'bursa', district: 'Yıldırım', address: 'Millet Cd. No:56' },
+  { id: 'lumen-beauty', name: 'Lumen Beauty Clinic', cityId: 'bursa', district: 'Nilüfer', address: 'Konak Mah. Merkez Cd. No:12' },
+  { id: 'elan-kuafor', name: 'Élan Kuaför & Studio', cityId: 'bursa', district: 'Osmangazi', address: 'Çekirge Cd. No:47' },
+  { id: 'uludag-termal', name: 'Uludağ Termal Resort', cityId: 'bursa', district: 'Osmangazi', address: 'Uludağ Yolu 12. Km' },
+  { id: 'cihangir-bistro', name: 'Cihangir Bistro', cityId: 'istanbul', district: 'Beyoğlu', address: 'Sıraselviler Cd. No:33' },
+  { id: 'kadikoy-dok', name: 'Dok Balık & Mezze', cityId: 'istanbul', district: 'Kadıköy', address: 'Moda Cd. No:88' },
+  { id: 'nisantasi-skin', name: 'Nişantaşı Skin Clinic', cityId: 'istanbul', district: 'Şişli', address: 'Teşvikiye Cd. No:102' },
+  { id: 'bosphorus-hotel', name: 'Bosphorus Palace Hotel', cityId: 'istanbul', district: 'Beşiktaş', address: 'Yıldız Cd. No:4' },
+  { id: 'cankaya-steak', name: 'Çankaya Steakhouse', cityId: 'ankara', district: 'Çankaya', address: 'Tunalı Hilmi Cd. No:66' },
+  { id: 'ankara-spa-mavi', name: 'Mavi Wellness Spa', cityId: 'ankara', district: 'Çankaya', address: 'Kavaklıdere Cilingir Sok. No:3' },
+  { id: 'alsancak-kahve', name: 'Alsancak Coffee House', cityId: 'izmir', district: 'Konak', address: 'Kıbrıs Şehitleri Cd. No:41' },
+  { id: 'cesme-resort', name: 'Çeşme Beach Resort', cityId: 'izmir', district: 'Çeşme', address: 'Ilıca Sahili No:1' },
+  { id: 'izmir-yoga', name: 'Asana Yoga & Pilates', cityId: 'izmir', district: 'Karşıyaka', address: 'Bostanlı Mah. No:14' },
+  { id: 'lara-beach', name: 'Lara Beach Resort & Spa', cityId: 'antalya', district: 'Muratpaşa', address: 'Lara Turizm Alanı' },
+  { id: 'kaleici-meyhane', name: 'Kaleiçi Meyhanesi', cityId: 'antalya', district: 'Muratpaşa', address: 'Kaleiçi Hıdırlık Sok. No:7' },
+  { id: 'antalya-fitness', name: 'Core Fitness Club', cityId: 'antalya', district: 'Konyaaltı', address: 'Hurma Mah. Konyaaltı Cd.' },
+  { id: 'odunpazari-cafe', name: 'Odunpazarı Köşkü', cityId: 'eskisehir', district: 'Odunpazarı', address: 'Atlıhan Sok. No:19' },
+  { id: 'eski-wellness', name: 'Termal Wellness Center', cityId: 'eskisehir', district: 'Tepebaşı', address: 'Hamamyolu Sk. No:3' },
 ];
 
 // ─── Kampanyalar (~24) ───────────────────────────────────────────────────────
@@ -373,6 +373,404 @@ const demoCampaigns = [
   },
 ];
 
+// ─── Zengin içerik varsayılanları (kategori bazlı) ──────────────────────────
+const CONTENT_BY_CATEGORY = {
+  restoran: {
+    highlights: [
+      'Rezervasyonlu masa servisi',
+      'Taze günlük malzemeler',
+      'Ücretsiz ikram & su',
+    ],
+    included: ['Menüde belirtilen tüm öğeler', 'Servis ücreti'],
+    notIncluded: ['Alkollü içecekler (menüde belirtilmediyse)', 'Bahşiş'],
+    howToUse: [
+      'Satın aldıktan sonra kuponunuz panelinize düşer.',
+      'İşletmeyi arayarak rezervasyon yaptırın, tarih/saat belirleyin.',
+      'Geldiğinizde kupon kodunuzu garsonunuza gösterin.',
+      'Keyfinize bakın!',
+    ],
+    terms:
+      '• Kupon tek seferde kullanılır.\n' +
+      '• Rezervasyonsuz gelişlerde masa garantisi verilmez.\n' +
+      '• Hafta sonu & özel günlerde (14 Şubat, yılbaşı) geçerli değildir.\n' +
+      '• Menüdeki ek siparişler ücrete tabidir.',
+    faq: [
+      {
+        question: 'Rezervasyon yapmadan gidebilir miyim?',
+        answer:
+          'Masa garantisi için rezervasyon tavsiye edilir; yoğun zamanlarda sırada bekleme olabilir.',
+      },
+      {
+        question: 'Kuponumun geçerliliği ne kadar?',
+        answer: 'Kampanya son kullanım tarihine kadar geçerlidir.',
+      },
+      {
+        question: 'Hafta sonu kullanabilir miyim?',
+        answer:
+          'Normal hafta sonları geçerlidir; resmi bayram ve özel günlerde geçerli değildir.',
+      },
+    ],
+  },
+  wellness: {
+    highlights: [
+      'Hijyen standartlarında uzman ekip',
+      'Kişiye özel bakım seansı',
+      'Sonrasında bitki çayı ikramı',
+    ],
+    included: ['Havlu ve bornoz', 'Duş kullanımı', 'Terlik'],
+    notIncluded: ['Kişisel bakım ürünleri', 'Ekstra masaj süresi'],
+    howToUse: [
+      'Kupon kodunuzu alın.',
+      'Telefon veya WhatsApp ile randevu oluşturun.',
+      'Randevudan 24 saat önce onay alın.',
+      'İşletmeye giderken kimliğinizi ve kuponu yanınızda bulundurun.',
+    ],
+    terms:
+      '• Randevu sistemiyle çalışır, doldurulmuş saatlere yeni rezervasyon alınmaz.\n' +
+      '• Randevu iptali 12 saat öncesinden yapılmalıdır; aksi halde kupon kullanılmış sayılır.\n' +
+      '• Kampanya tek kişi içindir, devredilemez.',
+    faq: [
+      {
+        question: 'Hamile veya sağlık problemim varsa kullanabilir miyim?',
+        answer:
+          'Lütfen randevu öncesi bilgi verin; uzmanımız uygun olup olmadığını değerlendirecektir.',
+      },
+      {
+        question: 'Randevumu değiştirebilir miyim?',
+        answer:
+          'Evet, 12 saat öncesinden haber vermeniz koşuluyla uygun bir tarihe alabiliriz.',
+      },
+    ],
+  },
+  guzellik: {
+    highlights: [
+      'FDA / CE onaylı cihazlar',
+      'Uzman estetisyen eşliğinde',
+      'Sonuç fotoğraflarıyla takip',
+    ],
+    included: ['Seans öncesi cilt analizi', 'Hijyen malzemeleri'],
+    notIncluded: ['Evde bakım ürünleri'],
+    howToUse: [
+      'Kupon kodunuzu alın.',
+      'Randevu için klinikle iletişime geçin.',
+      'Kliniğe giderken kuponu gösterin.',
+    ],
+    terms:
+      '• Kupon, sadece kampanyada belirtilen uygulama için geçerlidir.\n' +
+      '• Seans değişikliği kliniğin uygun bulması halinde yapılabilir.\n' +
+      '• 18 yaş altı için ebeveyn onayı gerekir.',
+    faq: [
+      {
+        question: 'Kaç seansta sonuç görürüm?',
+        answer:
+          'Cilt tipine göre değişir; uzmanımız ilk seansta kişisel plan belirler.',
+      },
+    ],
+  },
+  seyahat: {
+    highlights: [
+      'Son dakika müsaitlik kontrolü kolay',
+      'Ücretsiz park',
+      'Kahvaltı dahil',
+    ],
+    included: ['Belirtilen konaklama süresi', 'Kahvaltı', 'Wi-Fi', 'Park'],
+    notIncluded: ['Konaklama vergisi', 'Mini-bar', 'Ekstra gece'],
+    howToUse: [
+      'Kupon kodunuzu alın.',
+      'Otelle iletişime geçerek müsait tarih belirleyin.',
+      'Giriş sırasında kimliğinizi ve kuponunuzu resepsiyona gösterin.',
+    ],
+    terms:
+      '• Müsaitlik durumuna göre rezervasyon yapılır.\n' +
+      '• Resmi tatil ve bayramlarda ek fark çıkabilir.\n' +
+      '• Erken ayrılışlarda iade yapılmaz.',
+    faq: [
+      {
+        question: 'Evcil hayvan kabul ediyor musunuz?',
+        answer: 'Lütfen otelle önceden iletişime geçin.',
+      },
+      {
+        question: 'Ekstra gece eklemek istersem?',
+        answer:
+          'Otelin güncel tarifesi üzerinden aradaki farkı ödeyerek uzatabilirsiniz.',
+      },
+    ],
+  },
+  spor: {
+    highlights: ['Sınırsız ders hakkı', 'Duş & dolap kullanımı', 'Uzman eğitmen'],
+    included: ['Tüm grup derslerine katılım', 'Duş, dolap, havlu servisi'],
+    notIncluded: ['Özel (PT) seanslar', 'Besin desteği ürünleri'],
+    howToUse: [
+      'Kupon kodunuzu alın.',
+      'Tesise gidin ve resepsiyonda kodu gösterip üyelik kartınızı alın.',
+      'Uygulamadan dersleri seçin.',
+    ],
+    terms: '• Üyelik başladıktan sonra dondurulamaz.\n• Misafir getirme yok.',
+    faq: [
+      {
+        question: 'Üyelik hangi saatler arasında kullanılabilir?',
+        answer: 'Tesisin çalışma saatleri dahilinde sınırsız giriş hakkınız vardır.',
+      },
+    ],
+  },
+  eglence: {
+    highlights: ['Ailece uygun', 'Gün içi sınırsız kullanım', 'Güvenli oyun alanı'],
+    included: ['Giriş bileti', 'Gün boyu sınırsız kullanım'],
+    notIncluded: ['Yiyecek ve içecek'],
+    howToUse: [
+      'Kupon kodunuzu alın.',
+      'Gişede gösterip bileklik alın.',
+      'Keyfinize bakın.',
+    ],
+    terms: '• Hafta içi geçerlidir.\n• Resmi tatillerde geçerli değildir.',
+    faq: [],
+  },
+  egitim: {
+    highlights: ['Sertifika', 'Uzman eğitmen', 'Tekrar izleme hakkı'],
+    included: ['Eğitim içeriği', 'Katılım sertifikası'],
+    notIncluded: ['Ekstra materyal'],
+    howToUse: [
+      'Kupon kodunuzu alın.',
+      'Eğitim kurumuyla iletişime geçin, başlangıç tarihi alın.',
+    ],
+    terms: '• Başlayan eğitim iade edilmez.',
+    faq: [],
+  },
+};
+
+const DEFAULT_CONTENT = {
+  highlights: ['Hızlı kullanım', 'Güvenli ödeme', 'iyzico güvencesi'],
+  included: ['Kampanyada belirtilen hizmet'],
+  notIncluded: ['Ek siparişler'],
+  howToUse: [
+    'Kupon kodunuzu alın.',
+    'İşletmeyle iletişime geçin.',
+    'İşletmede kupon kodunuzu gösterin.',
+  ],
+  terms: '• Kupon tek seferde kullanılır.\n• Kampanya bitiş tarihine kadar geçerlidir.',
+  faq: [],
+};
+
+const DEFAULT_CANCELLATION =
+  'Satın aldıktan sonra 14 gün içinde ve kuponunuzu KULLANMAMIŞ olmanız şartıyla tam iade alabilirsiniz. Kullanılmış kuponlarda iade yapılamaz.';
+
+// ─── Çoklu paketli özel kampanyalar ──────────────────────────────────────────
+// Bu kampanyaların tek fiyat yerine birkaç paketi olur (demo görünümü zengin).
+const MULTI_PACKAGES = {
+  'aromaterapi-kacis': [
+    {
+      name: '1 Kişilik Klasik Seans',
+      description: '60 dk aromatik yağ masajı + bitki çayı ikramı',
+      price: 650,
+      originalPrice: 950,
+      quota: 60,
+      soldCount: 8,
+      isDefault: true,
+    },
+    {
+      name: '1 Kişilik Tam Paket',
+      description: '90 dk masaj + buhar seansı + bitki çayı',
+      price: 980,
+      originalPrice: 1400,
+      quota: 40,
+      soldCount: 3,
+    },
+    {
+      name: '2 Kişilik Çift Paketi',
+      description: '2 kişilik 90 dk masaj + buhar, aynı kabinde',
+      price: 1750,
+      originalPrice: 2700,
+      quota: 20,
+      soldCount: 1,
+    },
+  ],
+  'steak-menu': [
+    {
+      name: '2 Kişilik Standart',
+      description: 'Dry-age biftek + garnitür + tatlı',
+      price: 1680,
+      originalPrice: 2400,
+      quota: 40,
+      soldCount: 14,
+      isDefault: true,
+    },
+    {
+      name: '2 Kişilik + Şarap',
+      description: 'Standart menü + 1 şişe ev şarabı',
+      price: 2100,
+      originalPrice: 3100,
+      quota: 20,
+      soldCount: 4,
+    },
+  ],
+  'uludag-termal-kacamak': [
+    {
+      name: '2 Kişi - Standart Oda (2 Gece)',
+      description: 'Yarım pansiyon + spa kullanımı',
+      price: 3025,
+      originalPrice: 4200,
+      quota: 25,
+      soldCount: 8,
+      isDefault: true,
+    },
+    {
+      name: '2 Kişi - Süit (2 Gece)',
+      description: 'Süit oda + tam pansiyon + spa + masaj kredisi',
+      price: 4200,
+      originalPrice: 6200,
+      quota: 15,
+      soldCount: 3,
+    },
+  ],
+  'lara-beach-paket': [
+    {
+      name: '2 Kişi - Standart Oda (3 Gün)',
+      description: 'Ultra her şey dahil',
+      price: 9800,
+      originalPrice: 15000,
+      quota: 20,
+      soldCount: 5,
+      isDefault: true,
+    },
+    {
+      name: '2 Kişi - Deluxe (3 Gün)',
+      description: 'Deniz manzaralı + spa kredisi 2500₺',
+      price: 12500,
+      originalPrice: 19500,
+      quota: 10,
+      soldCount: 3,
+    },
+  ],
+  hydrafacial: [
+    {
+      name: 'Tek Seans Bakım',
+      description: 'Temizlik + ekstraksiyon + serum',
+      price: 810,
+      originalPrice: 1800,
+      quota: 30,
+      soldCount: 9,
+      isDefault: true,
+    },
+    {
+      name: '3 Seans Paketi',
+      description: 'Aylık düzenli bakım programı',
+      price: 2200,
+      originalPrice: 5400,
+      quota: 20,
+      soldCount: 5,
+    },
+    {
+      name: '5 Seans Paketi',
+      description: 'İntensif cilt yenileme programı',
+      price: 3400,
+      originalPrice: 9000,
+      quota: 10,
+      soldCount: 2,
+    },
+  ],
+};
+
+function makePackageId(campaignId, idx) {
+  return `pkg-${campaignId}-${idx}`;
+}
+
+function buildPackages(c) {
+  const multi = MULTI_PACKAGES[c.id];
+  if (multi) {
+    return multi.map((p, i) => ({
+      id: makePackageId(c.id, i),
+      name: p.name,
+      description: p.description,
+      price: p.price,
+      originalPrice: p.originalPrice,
+      quota: p.quota,
+      soldCount: p.soldCount ?? 0,
+      isDefault: !!p.isDefault || i === 0,
+    }));
+  }
+  return [
+    {
+      id: makePackageId(c.id, 0),
+      name: 'Standart',
+      description: '',
+      price: c.price,
+      originalPrice: c.originalPrice,
+      quota: c.quota ?? 0,
+      soldCount: c.soldCount ?? 0,
+      isDefault: true,
+    },
+  ];
+}
+
+function computeAggregates(packages) {
+  const prices = packages.map((p) => Number(p.price) || 0);
+  const originals = packages.map((p) => Number(p.originalPrice) || 0);
+  return {
+    minPrice: Math.min(...prices),
+    maxOriginalPrice: Math.max(...originals),
+    totalQuota: packages.reduce((s, p) => s + (Number(p.quota) || 0), 0),
+    totalSold: packages.reduce((s, p) => s + (Number(p.soldCount) || 0), 0),
+  };
+}
+
+function locationFor(business) {
+  return {
+    address: business?.address ?? '',
+    district: business?.district ?? '',
+    phone: business?.phone ?? '+90 224 000 00 00',
+    workingHours: 'Pzt-Cmt 10:00-22:00 · Pazar 11:00-19:00',
+    mapUrl: '',
+  };
+}
+
+function enrichCampaign(c, businessesById) {
+  const content = CONTENT_BY_CATEGORY[c.categoryId] ?? DEFAULT_CONTENT;
+  const packages = buildPackages(c);
+  const aggregates = computeAggregates(packages);
+  const biz = businessesById[c.businessId];
+
+  // Kısa açıklama: ilk cümle veya max 160 karakter
+  const shortDesc =
+    c.description.length <= 160
+      ? c.description
+      : c.description.split('.')[0] + '.';
+
+  return {
+    title: c.title,
+    slug: c.id,
+    shortDescription: shortDesc,
+    description: c.description,
+
+    businessId: c.businessId,
+    businessName: c.businessName,
+    cityId: c.cityId,
+    district: c.district,
+    categoryId: c.categoryId,
+    rating: c.rating,
+    images: c.images,
+
+    packages,
+    ...aggregates,
+
+    highlights: content.highlights,
+    included: content.included,
+    notIncluded: content.notIncluded,
+    howToUse: content.howToUse,
+    terms: content.terms,
+    faq: content.faq,
+    cancellation: DEFAULT_CANCELLATION,
+
+    location: locationFor(biz),
+    paymentInfo: {
+      maxInstallments: 9,
+      installmentNote: '3 taksit komisyonsuz.',
+    },
+
+    isActive: true,
+    isFeatured: !!c.isFeatured,
+  };
+}
+
 // ─── Seed akışı ──────────────────────────────────────────────────────────────
 async function seed() {
   const batch = db.batch();
@@ -403,26 +801,124 @@ async function seed() {
     );
   }
 
+  // İşletmeleri id → nesne eşlemesine çevir (konum alanı için)
+  const businessesById = Object.fromEntries(
+    demoBusinesses.map((b) => [b.id, b]),
+  );
+
   for (const c of demoCampaigns) {
-    const { id, daysLeft, ...rest } = c;
+    const enriched = enrichCampaign(c, businessesById);
     batch.set(
-      db.collection('campaigns').doc(id),
+      db.collection('campaigns').doc(c.id),
       {
-        ...rest,
-        slug: id,
-        isActive: true,
-        expiresAt: Timestamp.fromDate(new Date(now + daysLeft * DAY)),
+        ...enriched,
+        expiresAt: Timestamp.fromDate(new Date(now + c.daysLeft * DAY)),
         createdAt: FieldValue.serverTimestamp(),
         updatedAt: FieldValue.serverTimestamp(),
       },
+      { merge: true },
+    );
+  }
+
+  // ─── Homepage sections (Ana sayfa bölümleri) ──────────────────────────
+  const homepageSections = [
+    {
+      id: 'one-cikanlar',
+      title: 'Öne Çıkan Kampanyalar',
+      slug: 'one-cikanlar',
+      order: 0,
+      isActive: true,
+      campaignIds: demoCampaigns.filter((c) => c.isFeatured).slice(0, 6).map((c) => c.id),
+    },
+    {
+      id: 'restoran-kafe',
+      title: 'Restoran & Kafe Fırsatları',
+      slug: 'restoran-kafe',
+      order: 1,
+      isActive: true,
+      campaignIds: demoCampaigns.filter((c) => c.categoryId === 'restoran').slice(0, 6).map((c) => c.id),
+    },
+    {
+      id: 'spa-wellness',
+      title: 'Spa & Wellness',
+      slug: 'spa-wellness',
+      order: 2,
+      isActive: true,
+      campaignIds: demoCampaigns
+        .filter((c) => c.categoryId === 'guzellik' || c.categoryId === 'wellness')
+        .slice(0, 6)
+        .map((c) => c.id),
+    },
+  ];
+
+  for (const s of homepageSections) {
+    const { id, ...data } = s;
+    batch.set(
+      db.collection('homepage_sections').doc(id),
+      { ...data, createdAt: FieldValue.serverTimestamp() },
       { merge: true }
     );
+  }
+
+  // ─── Kampanya başvuruları (demo) ──────────────────────────────────────
+  const demoApplications = [
+    {
+      businessName: 'Vintage Barber Shop',
+      campaignTitle: 'Klasik Tıraş + Sakal Bakımı %40 İndirim',
+      description: 'Nilüfer merkezde butik berber salonumuz. Tıraş + sakal bakımı + yüz masajı paketi sunmak istiyoruz.',
+      contactEmail: 'info@vintagebarber.com',
+      contactPhone: '+90 532 000 10 20',
+      status: 'pending',
+    },
+    {
+      businessName: 'Yoga Loft Bursa',
+      campaignTitle: '10 Seans Yoga Üyeliği',
+      description: 'Odunpazarı benzeri loft stüdyomuzda sabah ve akşam dersleri için 10 seanslık indirimli paket.',
+      contactEmail: 'hello@yogaloft.com',
+      contactPhone: '+90 533 111 22 33',
+      status: 'pending',
+    },
+    {
+      businessName: 'Deniz Balık Restaurant',
+      campaignTitle: '2 Kişilik Balık Menü Fırsatı',
+      description: 'Mudanya sahilinde balık restoranı. 2 kişilik tam menü (meze + balık + tatlı) sunuyoruz.',
+      contactEmail: 'rezervasyon@denizbalik.com',
+      contactPhone: '+90 224 544 10 10',
+      status: 'reviewed',
+    },
+    {
+      businessName: 'Çınar Kahvaltı Evi',
+      campaignTitle: 'Köy Kahvaltısı 2 Kişilik',
+      description: 'Uludağ eteklerinde serpme köy kahvaltısı. Bahçeli alan ve taze ürünlerimizle.',
+      contactEmail: 'cinar@kahvalti.com',
+      contactPhone: '+90 224 777 88 99',
+      status: 'approved',
+    },
+    {
+      businessName: 'Funny Fun Park',
+      campaignTitle: 'Çocuklar İçin Tam Gün Bilet',
+      description: 'AVM içinde çocuk eğlence merkezi. Hafta içi tam gün sınırsız bilet için indirim yapabiliriz.',
+      contactEmail: 'iletisim@funnyfunpark.com',
+      contactPhone: '+90 224 222 33 44',
+      status: 'pending',
+    },
+  ];
+
+  for (const app of demoApplications) {
+    const ref = db.collection('applications').doc();
+    batch.set(ref, {
+      ...app,
+      createdAt: Timestamp.fromDate(
+        new Date(now - Math.floor(Math.random() * 10) * DAY),
+      ),
+    });
   }
 
   await batch.commit();
   console.log(
     `✅ Seed tamam: ${cities.length} şehir, ${categories.length} kategori, ` +
-    `${demoBusinesses.length} işletme, ${demoCampaigns.length} kampanya`
+    `${demoBusinesses.length} işletme, ${demoCampaigns.length} kampanya, ` +
+    `${homepageSections.length} ana sayfa bölümü, ${demoApplications.length} başvuru`
   );
 }
 

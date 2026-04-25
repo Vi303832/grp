@@ -1,16 +1,127 @@
-# React + Vite
+# GRP Kampanya Platformu
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Bursa odaklı kampanya & kupon platformu. Vite + React + Firebase (Auth, Firestore, Functions, Storage, Hosting) + Tailwind v4.
 
-Currently, two official plugins are available:
+## Kurulum
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+```bash
+npm install
+cd functions && npm install && cd ..
+```
 
-## React Compiler
+`.env.local` dosyasını `.env.example` üzerinden oluşturup Firebase config değerlerini girin.
+Emülatörle çalışmak için `.env.local` içine `VITE_USE_EMULATORS=true` ekleyin.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Geliştirme
 
-## Expanding the ESLint configuration
+```bash
+# Vite dev sunucusu
+npm run dev
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+# Firebase emülatörleri (ayrı terminal)
+npm run emulators
+
+# Firestore'a demo veriyi doldur (emülatör veya production)
+npm run seed
+```
+
+## Demo Senaryosu (Patron Sunumu İçin)
+
+Aşağıdaki akış tüm sistemi uçtan uca gösterir. Önce `npm run seed` çalıştırın.
+
+### 1. Admin Panel Turu
+
+1. **Giriş:** `/giris` → admin hesabı ile giriş
+2. **`/admin`** — Dashboard: aktif kampanya sayısı, son 7 gün siparişleri, aktif kuponlar, bekleyen başvurular
+3. **`/admin/kampanyalar`** — Kampanya listesi, filtre (aktif / pasif / öne çıkan), arama
+4. **`/admin/kampanyalar/yeni`** — Yeni kampanya oluştur (görsel upload dahil), slug otomatik, zod validasyonu
+5. **`/admin/siparisler`** — Tüm siparişler, durum filtresi, detay modal'ından manuel durum değiştirme
+6. **`/admin/kuponlar`** — Tüm kuponlar, manuel iptal
+7. **`/admin/basvurular`** — Kampanya başvuruları (onaylandı / reddedildi / incelendi)
+8. **`/admin/ana-sayfa`** — Homepage section'ları: sıralama, kampanya ataması
+9. **`/admin/kullanicilar`** — Kullanıcı listesi, rol atama (`setUserRole` Cloud Function)
+
+### 2. Kullanıcı Akışı (Demo)
+
+1. **`/`** — Ana sayfa, kampanya kartları
+2. **`/kampanya/:slug`** — Detay sayfası → "Hemen Satın Al"
+3. **`/odeme-sonucu`** — Ödeme sonucu ekranı (mock iyzico callback)
+4. **`/hesabim/kuponlarim`** — Üretilen kupon kodları
+5. **`/hesabim/siparislerim`** — Sipariş geçmişi
+
+## Mimari
+
+```
+src/
+├── features/
+│   ├── admin/              # Admin paneli (CRUD, dashboard, homepage)
+│   │   ├── AdminLayout.jsx
+│   │   ├── components/     # Sidebar, DataTable, StatCard, PageHeader, ...
+│   │   ├── dashboard/
+│   │   ├── campaigns/
+│   │   ├── orders/
+│   │   ├── coupons/
+│   │   ├── applications/
+│   │   ├── homepage/
+│   │   └── users/
+│   ├── auth/
+│   ├── campaigns/          # Public kampanya sayfaları + hooks
+│   ├── orders/             # Ödeme akışı
+│   ├── user-panel/         # Profil, Kuponlarım, Siparişlerim
+│   └── business/
+├── lib/
+│   ├── api/                # Cloud Function + Firestore API katmanı
+│   ├── firebase.js
+│   └── utils.js
+├── router/
+└── components/ui           # Button, Card, Modal, Badge, Spinner, IconSelect
+
+functions/
+└── src/
+    ├── auth/setUserRole.js
+    ├── orders/createOrder.js
+    ├── payments/iyzicoWebhook.js
+    ├── coupons/{generate,validate,use,cancel}Coupon.js
+    └── emails/sendOrderEmail.js
+```
+
+### Backend Bağlantı Katmanı (`src/lib/api/`)
+
+Frontend developer'ın kullanacağı soyutlama:
+
+- `campaignsApi.getCampaignBySlug(slug)` — detay sayfası
+- `ordersApi.createOrder({ campaignId, quantity })` — satın alma başlat
+- `ordersApi.getUserOrders(userId)` — sipariş geçmişi
+- `couponsApi.getUserCoupons(userId)` — kullanıcı kuponları
+- `couponsApi.validateCoupon(code)` — işletme kupon doğrulama
+- `couponsApi.useCoupon(code)` — işletme kupon kullanma
+- `couponsApi.cancelCoupon(couponId, reason)` — admin manuel iptal
+
+Hazır TanStack Query hook'ları:
+
+- `useCampaignBySlug`, `useCreateOrder`, `useUserOrders`, `useUserCoupons`
+- `useValidateCouponMutation`, `useUseCouponMutation`
+
+## Backend Durumu
+
+- `setUserRole` — **Tam çalışıyor**
+- `createOrder` — **İskelet hazır**, iyzico entegrasyonu TODO (mock URL döner)
+- `iyzicoWebhook` — **İskelet hazır**, imza doğrulama + gerçek payload TODO
+- `validateCoupon`, `useCoupon`, `cancelCoupon` — **Tam çalışıyor**
+- `generateCouponCode` — **Tam çalışıyor** (GRP-XXXXXX + çakışma kontrolü)
+- `sendOrderEmail` — **İskelet hazır**, Resend entegrasyonu TODO
+
+iyzico ve Resend entegrasyonları, ilgili `TODO(backend)` yorumlarında belirtilen noktalarda devreye alınacak.
+
+## Deploy
+
+```bash
+# Firestore rules + indexes
+firebase deploy --only firestore
+
+# Cloud Functions
+firebase deploy --only functions
+
+# Frontend
+npm run build && firebase deploy --only hosting
+```

@@ -4,18 +4,67 @@ import HomePage from '../pages/HomePage';
 import LoginPage from '../features/auth/LoginPage';
 import RegisterPage from '../features/auth/RegisterPage';
 import ForgotPasswordPage from '../features/auth/ForgotPasswordPage';
-import ProtectedRoute from './ProtectedRoute';
 import GuestRoute from './GuestRoute';
 import NotFoundPage from '../pages/NotFoundPage';
 
 const router = createBrowserRouter([
+  // ─── Admin (full-screen layout, Navbar/Footer olmadan) ─────────────
+  {
+    path: '/admin',
+    lazy: () => import('../features/admin/AdminLayout'),
+    children: [
+      {
+        index: true,
+        lazy: () => import('../features/admin/dashboard/DashboardPage'),
+      },
+      {
+        path: 'kampanyalar',
+        lazy: () =>
+          import('../features/admin/campaigns/CampaignListPage'),
+      },
+      {
+        path: 'kampanyalar/yeni',
+        lazy: () =>
+          import('../features/admin/campaigns/CampaignFormPage'),
+      },
+      {
+        path: 'kampanyalar/:id',
+        lazy: () =>
+          import('../features/admin/campaigns/CampaignFormPage'),
+      },
+      {
+        path: 'siparisler',
+        lazy: () => import('../features/admin/orders/OrderListPage'),
+      },
+      {
+        path: 'kuponlar',
+        lazy: () => import('../features/admin/coupons/CouponListPage'),
+      },
+      {
+        path: 'basvurular',
+        lazy: () =>
+          import('../features/admin/applications/ApplicationListPage'),
+      },
+      {
+        path: 'ana-sayfa',
+        lazy: () =>
+          import('../features/admin/homepage/HomepageSectionsPage'),
+      },
+      {
+        path: 'kullanicilar',
+        lazy: () => import('../features/admin/users/UserListPage'),
+      },
+    ],
+  },
+
+  // ─── Public / User rotaları (RootLayout ile) ───────────────────────
   {
     path: '/',
     element: <RootLayout />,
     children: [
       { index: true, element: <HomePage /> },
 
-      // Misafir rotaları (giriş yapmışsa yönlendirme)
+      // Misafir rotaları
       {
         path: 'giris',
         element: (
@@ -39,6 +88,18 @@ const router = createBrowserRouter([
             <ForgotPasswordPage />
           </GuestRoute>
         ),
+      },
+
+      // Kampanya detay (demo sayfası)
+      {
+        path: 'kampanya/:slug',
+        lazy: () => import('../features/campaigns/CampaignDetailPage'),
+      },
+
+      // Ödeme sonucu (iyzico callback placeholder)
+      {
+        path: 'odeme-sonucu',
+        lazy: () => import('../features/orders/PaymentResultPage'),
       },
 
       // Kullanıcı paneli (giriş gerekli)
@@ -65,12 +126,6 @@ const router = createBrowserRouter([
       {
         path: 'isletme',
         lazy: () => import('../features/business/BusinessLayout'),
-      },
-
-      // Admin paneli
-      {
-        path: 'admin',
-        lazy: () => import('../features/admin/AdminLayout'),
       },
 
       { path: '*', element: <NotFoundPage /> },

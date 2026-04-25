@@ -21,14 +21,23 @@ export default function CampaignCard({
     slug,
     title,
     description,
-    price,
-    originalPrice,
+    shortDescription,
     images,
     expiresAt,
     district,
     businessName,
     rating,
+    packages: pkgs,
   } = campaign;
+
+  // Yeni model: minPrice / maxOriginalPrice (packages'ten denormalize).
+  // Eski model: price / originalPrice. İkisine de fallback yap.
+  const price = campaign.minPrice ?? campaign.price ?? 0;
+  const originalPrice = campaign.maxOriginalPrice ?? campaign.originalPrice ?? 0;
+
+  // 1'den fazla paket varsa "Başlangıç: ₺X" ifadesini göster
+  const hasMultiplePackages = Array.isArray(pkgs) && pkgs.length > 1;
+  const summary = shortDescription || description;
 
   const href = `/kampanya/${slug}`;
   const image = images?.[0];
@@ -73,7 +82,7 @@ export default function CampaignCard({
             {title}
           </h3>
           <p className="mb-4 line-clamp-3 max-w-2xl font-body text-sm leading-relaxed text-on-surface-variant md:mb-6 md:text-base md:leading-loose">
-            {description}
+            {summary}
           </p>
           <div className="flex items-end justify-between gap-3">
             <div className="flex flex-col">
@@ -220,9 +229,9 @@ export default function CampaignCard({
           >
             {title}
           </h3>
-          {hero && description && (
+          {hero && summary && (
             <p className="hidden max-w-lg font-body text-sm leading-relaxed opacity-90 sm:line-clamp-2 md:line-clamp-3">
-              {description}
+              {summary}
             </p>
           )}
           <div
@@ -337,6 +346,11 @@ export default function CampaignCard({
             {originalPrice > price && (
               <span className="block truncate text-[10px] font-label text-on-surface-variant line-through xs:text-xs">
                 {formatPrice(originalPrice)}
+              </span>
+            )}
+            {hasMultiplePackages && (
+              <span className="block text-[9px] font-label uppercase tracking-wider text-on-surface-variant xs:text-[10px]">
+                Başlangıç
               </span>
             )}
             <span className="block truncate font-headline text-base font-extrabold text-on-tertiary-container xs:text-lg sm:text-xl">
