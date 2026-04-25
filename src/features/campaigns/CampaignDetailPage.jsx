@@ -65,6 +65,20 @@ function CampaignDetailPage() {
     );
   }, [packages, selectedPackageId]);
 
+  // Fiyat ve taksit hesapları — tüm hook'lar early return'lerden önce kalmalı.
+  const pkg = selectedPackage;
+  const totalPrice = (pkg?.price ?? 0) * quantity;
+  const maxInstallments = campaign?.paymentInfo?.maxInstallments ?? 1;
+
+  const installmentOptions = useMemo(() => {
+    const opts = [1, 2, 3, 6, 9, 12].filter((n) => n <= maxInstallments);
+    return opts.map((n) => ({
+      count: n,
+      perMonth: totalPrice / n,
+      label: n === 1 ? 'Tek Çekim' : `${n} Taksit`,
+    }));
+  }, [maxInstallments, totalPrice]);
+
   if (isLoading) {
     return (
       <PageWrapper>
@@ -95,26 +109,11 @@ function CampaignDetailPage() {
     );
   }
 
-  const pkg = selectedPackage;
   const discount = discountPercent(pkg?.originalPrice, pkg?.price);
   const stockLeft =
     pkg?.quota > 0 ? pkg.quota - (pkg.soldCount ?? 0) : null;
-
-  const maxInstallments = campaign.paymentInfo?.maxInstallments ?? 1;
   const installmentNote = campaign.paymentInfo?.installmentNote ?? '';
-
-  const totalPrice = (pkg?.price ?? 0) * quantity;
   const totalOriginal = (pkg?.originalPrice ?? 0) * quantity;
-
-  // Taksit seçenekleri
-  const installmentOptions = useMemo(() => {
-    const opts = [1, 2, 3, 6, 9, 12].filter((n) => n <= maxInstallments);
-    return opts.map((n) => ({
-      count: n,
-      perMonth: totalPrice / n,
-      label: n === 1 ? 'Tek Çekim' : `${n} Taksit`,
-    }));
-  }, [maxInstallments, totalPrice]);
 
   const handleBuy = async () => {
     if (!user) {
