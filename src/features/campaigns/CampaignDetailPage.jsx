@@ -405,46 +405,42 @@ function LocationMap({ location }) {
     );
   }
   
-  const hasCoordinates = location?.lat && location?.lng;
-  if (location?.mapUrl || hasCoordinates) {
-    return (
-      <div className="mt-4 overflow-hidden rounded-xl border border-outline-variant/30">
-        <div className="relative flex h-[260px] w-full items-center justify-center bg-[#f0f0f0] md:h-[360px]">
-          {/* Pattern overlay */}
-          <div 
-            className="absolute inset-0 opacity-20" 
-            style={{ backgroundImage: 'radial-gradient(#9ca3af 1px, transparent 1px)', backgroundSize: '20px 20px' }}
-          ></div>
-          
-          <div className="relative z-10 flex flex-col items-center gap-3">
-            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary">
-              <span className="material-symbols-outlined text-4xl">location_on</span>
-            </div>
-            {location?.mapUrl && (
-              <a
-                href={location.mapUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="rounded-lg bg-white px-4 py-2 text-sm font-medium text-on-surface shadow-sm transition hover:bg-surface-container"
-              >
-                Konumu haritada görüntüle
-              </a>
-            )}
+  return (
+    <div className="mt-4 overflow-hidden rounded-xl border border-outline-variant/30">
+      <div className="relative flex h-[260px] w-full items-center justify-center bg-[#f0f0f0] md:h-[360px]">
+        {/* Pattern overlay */}
+        <div 
+          className="absolute inset-0 opacity-20" 
+          style={{ backgroundImage: 'radial-gradient(#9ca3af 1px, transparent 1px)', backgroundSize: '20px 20px' }}
+        ></div>
+        
+        <div className="relative z-10 flex flex-col items-center gap-3">
+          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary">
+            <span className="material-symbols-outlined text-4xl">location_on</span>
           </div>
+          {location?.mapUrl ? (
+            <a
+              href={location.mapUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-lg bg-white px-4 py-2 text-sm font-medium text-on-surface shadow-sm transition hover:bg-surface-container"
+            >
+              Konumu haritada görüntüle
+            </a>
+          ) : (
+            <span className="rounded-lg bg-white/80 px-4 py-2 text-sm font-medium text-on-surface-variant shadow-sm backdrop-blur-sm">
+              Konum bilgisi yakında eklenecek.
+            </span>
+          )}
         </div>
       </div>
-    );
-  }
-  return null;
+    </div>
+  );
 }
 
 function LocationSection({ campaign }) {
-  const loc = campaign.location;
-  if (!loc) return null;
-  const hasInfo = loc?.address || loc?.district;
-  const hasMap = loc?.mapEmbedUrl || loc?.mapUrl || (loc?.lat && loc?.lng);
-  
-  if (!hasInfo && !hasMap) return null;
+  const loc = campaign?.location || {};
+  const hasInfo = loc.address || loc.district;
   
   return (
     <div className="py-8 border-b border-outline-variant/30">
@@ -452,16 +448,20 @@ function LocationSection({ campaign }) {
         <h2 className="font-headline text-[22px] font-semibold text-on-surface">
           Nerede olacaksınız?
         </h2>
-        {loc?.mapUrl && !loc?.mapEmbedUrl && (
+        {loc.mapUrl && !loc.mapEmbedUrl && (
            <a href={loc.mapUrl} target="_blank" rel="noreferrer" className="text-sm font-medium underline transition hover:text-primary">
              Haritada aç
            </a>
         )}
       </div>
       
-      {hasInfo && (
+      {hasInfo ? (
         <p className="mb-6 text-[15px] text-on-surface-variant">
           {loc.address ? loc.address : loc.district}
+        </p>
+      ) : (
+        <p className="mb-6 text-[15px] text-on-surface-variant">
+          Bu kampanya için açık adres detayı belirtilmemiş.
         </p>
       )}
       
@@ -524,7 +524,7 @@ function CalendarMonth({ year, month, availability, selectedDate, onSelect }) {
           if (!date) return <div key={`empty-${i}`} />;
           const localDateStr = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
           
-          let isAvailable = true;
+          let isAvailable = !!availability;
           if (availability?.availableDates?.length) {
             isAvailable = availability.availableDates.includes(localDateStr);
           }
@@ -553,15 +553,6 @@ function CalendarMonth({ year, month, availability, selectedDate, onSelect }) {
 }
 
 function AvailabilityCalendar({ availability, selectedDate, onSelect }) {
-  if (!availability) {
-    return (
-      <div className="py-8 border-b border-outline-variant/30" id="calendar-section">
-        <h2 className="mb-2 font-headline text-[22px] font-semibold text-on-surface">Müsaitlik durumu</h2>
-        <p className="text-[15px] text-on-surface-variant">Bu hizmet için takvim bilgisi henüz eklenmemiş.</p>
-      </div>
-    );
-  }
-
   const today = new Date();
   const currentMonth = today.getMonth();
   const currentYear = today.getFullYear();
@@ -570,7 +561,12 @@ function AvailabilityCalendar({ availability, selectedDate, onSelect }) {
   return (
     <div className="py-8 border-b border-outline-variant/30" id="calendar-section">
       <h2 className="mb-1 font-headline text-[22px] font-semibold text-on-surface">Müsaitlik durumu</h2>
-      <p className="mb-8 text-[15px] text-on-surface-variant">Uygun tarihleri görüntüleyin</p>
+      
+      {!availability ? (
+        <p className="mb-8 text-[15px] text-on-surface-variant">Bu hizmet için takvim bilgisi henüz eklenmemiş.</p>
+      ) : (
+        <p className="mb-8 text-[15px] text-on-surface-variant">Uygun tarihleri görüntüleyin</p>
+      )}
       
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
         <CalendarMonth year={currentYear} month={currentMonth} availability={availability} selectedDate={selectedDate} onSelect={onSelect} />
