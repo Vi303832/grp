@@ -11,82 +11,115 @@ import { useCreateOrder } from '../orders/useCreateOrder';
 
 /* ─────────────────────────── Sub-Components ─────────────────────────── */
 
-function CampaignGallery({ images, title, selectedImage, onSelect }) {
-  const hasImages = images?.length > 0;
+function PhotoPlaceholder() {
   return (
-    <div>
-      <div className="aspect-[16/10] overflow-hidden rounded-xl bg-surface-container-low">
-        {hasImages ? (
-          <img
-            src={images[selectedImage]}
-            alt={title}
-            className="h-full w-full object-cover transition-opacity duration-300"
-          />
-        ) : (
-          <div className="flex h-full flex-col items-center justify-center gap-2 text-on-surface-variant/40">
-            <span className="material-symbols-outlined text-5xl">image</span>
-            <span className="text-sm">Görsel yok</span>
+    <div className="flex h-full w-full items-center justify-center bg-surface-container">
+      <span className="material-symbols-outlined text-4xl text-on-surface-variant/30">image</span>
+    </div>
+  );
+}
+
+function CampaignGallery({ images, title }) {
+  const imgs = images?.length ? images : [];
+  const fill = (i) => imgs[i] || null;
+  return (
+    <>
+      {/* Desktop: Airbnb 5-photo grid */}
+      <div className="hidden md:grid md:grid-cols-4 md:grid-rows-2 gap-2 h-[420px] rounded-xl overflow-hidden">
+        <div className="col-span-2 row-span-2 relative">
+          {fill(0) ? <img src={fill(0)} alt={title} className="h-full w-full object-cover" /> : <PhotoPlaceholder />}
+        </div>
+        {[1,2,3,4].map((i) => (
+          <div key={i} className="relative overflow-hidden">
+            {fill(i) ? <img src={fill(i)} alt="" className="h-full w-full object-cover hover:opacity-90 transition" /> : <PhotoPlaceholder />}
+          </div>
+        ))}
+        {imgs.length > 5 && (
+          <button type="button" className="absolute right-4 bottom-4 flex items-center gap-1.5 rounded-lg bg-white px-3 py-1.5 text-sm font-medium text-on-surface shadow-md hover:bg-surface-container transition">
+            <span className="material-symbols-outlined text-base">apps</span>
+            Tüm fotoğrafları göster
+          </button>
+        )}
+      </div>
+      {/* Mobile: single image + thumbnails */}
+      <div className="md:hidden">
+        <div className="aspect-[16/10] overflow-hidden rounded-xl bg-surface-container-low">
+          {fill(0) ? <img src={fill(0)} alt={title} className="h-full w-full object-cover" /> : <PhotoPlaceholder />}
+        </div>
+        {imgs.length > 1 && (
+          <div className="mt-2 flex gap-1.5 overflow-x-auto pb-1">
+            {imgs.slice(0, 5).map((img, idx) => (
+              <div key={idx} className="h-14 w-20 shrink-0 overflow-hidden rounded-lg">
+                <img src={img} alt="" className="h-full w-full object-cover" />
+              </div>
+            ))}
           </div>
         )}
       </div>
-      {images?.length > 1 && (
-        <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
-          {images.map((img, idx) => (
-            <button
-              key={img + idx}
-              type="button"
-              onClick={() => onSelect(idx)}
-              className={cn(
-                'h-14 w-18 shrink-0 overflow-hidden rounded-lg transition-all duration-200',
-                idx === selectedImage
-                  ? 'ring-2 ring-primary ring-offset-2 ring-offset-surface'
-                  : 'opacity-50 hover:opacity-80',
-              )}
-            >
-              <img src={img} alt="" className="h-full w-full object-cover" />
-            </button>
-          ))}
-        </div>
+    </>
+  );
+}
+
+function TitleBar({ campaign }) {
+  return (
+    <div className="flex items-start justify-between gap-4 mb-5">
+      <h1 className="font-headline text-[22px] font-semibold leading-snug text-on-surface md:text-[26px]">
+        {campaign.title}
+      </h1>
+      <div className="hidden shrink-0 items-center gap-2 md:flex">
+        <button type="button" className="flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-on-surface hover:bg-surface-container transition">
+          <span className="material-symbols-outlined text-lg">ios_share</span>
+          Paylaş
+        </button>
+        <button type="button" className="flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-on-surface hover:bg-surface-container transition">
+          <span className="material-symbols-outlined text-lg">favorite_border</span>
+          Kaydet
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function MetaBadges({ campaign, discount }) {
+  return (
+    <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm text-on-surface-variant">
+      {campaign.district && (
+        <span className="flex items-center gap-1">
+          <span className="material-symbols-outlined text-base">location_on</span>
+          {campaign.district}
+        </span>
+      )}
+      {campaign.rating && (
+        <span className="flex items-center gap-1 font-medium">
+          <span className="material-symbols-outlined text-base text-primary">star</span>
+          {campaign.rating.toFixed(1)}
+        </span>
+      )}
+      {campaign.isFeatured && (
+        <span className="rounded-full bg-primary-fixed/60 px-2 py-0.5 text-xs font-medium text-on-primary-fixed">Öne Çıkan</span>
+      )}
+      {discount > 0 && (
+        <span className="rounded-full bg-error-container px-2 py-0.5 text-xs font-medium text-on-error-container">%{discount}</span>
+      )}
+      {campaign.expiresAt && (
+        <span className="flex items-center gap-1 text-xs">
+          <span className="material-symbols-outlined text-sm">schedule</span>
+          {timeLeft(campaign.expiresAt)}
+        </span>
       )}
     </div>
   );
 }
 
-function CampaignHeader({ campaign, discount }) {
+function HostSummary({ campaign }) {
   return (
-    <div className="space-y-3">
-      <h1 className="font-headline text-2xl font-semibold leading-tight text-on-surface md:text-[28px]">
-        {campaign.title}
-      </h1>
-      {campaign.shortDescription && (
-        <p className="text-[15px] leading-relaxed text-on-surface-variant">
-          {campaign.shortDescription}
-        </p>
-      )}
-      <div className="flex flex-wrap items-center gap-2">
-        {campaign.isFeatured && (
-          <span className="inline-flex items-center gap-1 rounded-full bg-primary-fixed px-2.5 py-1 text-xs font-medium text-on-primary-fixed">
-            <span className="material-symbols-outlined text-[14px]">star</span>
-            Öne Çıkan
-          </span>
-        )}
-        {discount > 0 && (
-          <span className="inline-flex items-center rounded-full bg-error-container px-2.5 py-1 text-xs font-medium text-on-error-container">
-            %{discount} indirim
-          </span>
-        )}
-        {campaign.location?.district && (
-          <span className="inline-flex items-center gap-1 rounded-full bg-surface-container px-2.5 py-1 text-xs text-on-surface-variant">
-            <span className="material-symbols-outlined text-[13px]">location_on</span>
-            {campaign.location.district}
-          </span>
-        )}
-        {campaign.expiresAt && (
-          <span className="inline-flex items-center gap-1 rounded-full bg-surface-container px-2.5 py-1 text-xs text-on-surface-variant">
-            <span className="material-symbols-outlined text-[13px]">schedule</span>
-            {timeLeft(campaign.expiresAt)}
-          </span>
-        )}
+    <div className="flex items-center gap-3 py-6">
+      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-container text-on-primary-container text-sm font-bold">
+        {(campaign.businessName || 'G')[0].toUpperCase()}
+      </div>
+      <div>
+        <p className="text-sm font-medium text-on-surface">{campaign.businessName || 'GRP'} tarafından sunuluyor</p>
+        {campaign.district && <p className="text-xs text-on-surface-variant">{campaign.district}</p>}
       </div>
     </div>
   );
@@ -303,7 +336,7 @@ function PurchaseCard({
   isBuying,
 }) {
   return (
-    <div className="rounded-2xl border border-outline-variant/40 bg-surface-container-lowest p-6 shadow-md">
+    <div className="rounded-2xl border border-outline-variant/30 bg-white p-6 shadow-[0_6px_16px_rgba(0,0,0,0.12)]">
       {/* Price display */}
       <div className="mb-5">
         {pkg && (
@@ -403,7 +436,7 @@ function CampaignDetailPage() {
   const { data: campaign, isLoading, error } = useCampaignBySlug(slug);
   const createOrder = useCreateOrder();
 
-  const [selectedImage, setSelectedImage] = useState(0);
+
   const [selectedPackageId, setSelectedPackageId] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [installments, setInstallments] = useState(1);
@@ -514,28 +547,29 @@ function CampaignDetailPage() {
       />
 
       {/* Breadcrumb */}
-      <nav className="mb-6 text-[13px] text-on-surface-variant/60">
-        <Link to="/" className="transition-colors hover:text-primary">
-          Ana Sayfa
-        </Link>
+      <nav className="mb-4 text-[13px] text-on-surface-variant/60">
+        <Link to="/" className="transition-colors hover:text-primary">Ana Sayfa</Link>
         <span className="mx-1.5">›</span>
         <span className="text-on-surface-variant">{campaign.title}</span>
       </nav>
+
+      {/* Title above gallery - Airbnb style */}
+      <TitleBar campaign={campaign} />
+
+      {/* Airbnb photo grid */}
+      <CampaignGallery images={campaign.images} title={campaign.title} />
+
+      {/* Meta badges */}
+      <div className="mt-4 mb-2">
+        <MetaBadges campaign={campaign} discount={discount} />
+      </div>
 
       {/* 2-column grid */}
       <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[minmax(0,1fr)_380px] lg:gap-12">
         {/* ── Left Column ── */}
         <div>
-          <CampaignGallery
-            images={campaign.images}
-            title={campaign.title}
-            selectedImage={selectedImage}
-            onSelect={setSelectedImage}
-          />
-
-          <div className="mt-6">
-            <CampaignHeader campaign={campaign} discount={discount} />
-          </div>
+          {/* Host summary */}
+          <HostSummary campaign={campaign} />
 
           {/* ── Content sections with dividers ── */}
           <div className="divide-y divide-outline-variant/30">
