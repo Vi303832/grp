@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 import PageWrapper from '../../components/layout/PageWrapper';
 import Seo from '../../components/seo/Seo';
 import { Button, Spinner } from '../../components/ui';
-import { cn, formatPrice, discountPercent, timeLeft } from '../../lib/utils';
+import { cn, formatPrice, formatDate, discountPercent, timeLeft } from '../../lib/utils';
 import useAuthStore from '../../store/authStore';
 import { useCampaignBySlug } from './useCampaignBySlug';
 import { useCreateOrder } from '../orders/useCreateOrder';
@@ -305,6 +305,142 @@ function InstallmentSelector({ options, selected, onSelect, note }) {
         <p className="text-[11px] text-on-surface-variant">{note}</p>
       )}
     </div>
+  );
+}
+
+/* ─────────────── Reviews & Rating ─────────────── */
+
+function RatingSummary({ rating, reviewCount }) {
+  if (!rating) {
+    return (
+      <div className="flex items-center gap-2 text-sm text-on-surface-variant">
+        <span className="material-symbols-outlined text-xl">star_border</span>
+        <span>Henüz puanlanmadı</span>
+      </div>
+    );
+  }
+  return (
+    <div className="flex items-center gap-3">
+      <span className="material-symbols-outlined text-2xl text-primary">star</span>
+      <span className="font-headline text-xl font-semibold text-on-surface">{rating.toFixed(2)}</span>
+      {reviewCount != null && (
+        <span className="text-sm text-on-surface-variant">· {reviewCount} değerlendirme</span>
+      )}
+    </div>
+  );
+}
+
+function ReviewCard({ review }) {
+  return (
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center gap-3">
+        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-surface-container text-sm font-bold text-on-surface-variant">
+          {(review.userName || 'K')[0].toUpperCase()}
+        </div>
+        <div>
+          <p className="text-sm font-medium text-on-surface">{review.userName || 'Kullanıcı'}</p>
+          <div className="flex items-center gap-1.5 text-xs text-on-surface-variant">
+            {review.rating && (
+              <span className="flex items-center gap-0.5">
+                <span className="material-symbols-outlined text-sm text-primary">star</span>
+                {review.rating.toFixed(1)}
+              </span>
+            )}
+            {review.createdAt && (
+              <span>· {formatDate(review.createdAt)}</span>
+            )}
+          </div>
+        </div>
+      </div>
+      {review.comment && (
+        <p className="text-[14px] leading-relaxed text-on-surface-variant">{review.comment}</p>
+      )}
+    </div>
+  );
+}
+
+function ReviewsSection({ campaign }) {
+  const reviews = campaign.reviews?.slice(0, 4) ?? [];
+  const hasReviews = reviews.length > 0;
+  return (
+    <div className="py-6">
+      <h2 className="mb-5 flex items-center gap-2 font-headline text-lg font-semibold text-on-surface">
+        <span className="material-symbols-outlined text-[20px] text-primary">reviews</span>
+        Değerlendirmeler
+      </h2>
+      <RatingSummary rating={campaign.rating} reviewCount={campaign.reviewCount} />
+      {hasReviews ? (
+        <>
+          <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
+            {reviews.map((r) => <ReviewCard key={r.id} review={r} />)}
+          </div>
+          {(campaign.reviews?.length ?? 0) > 4 && (
+            <button type="button" className="mt-6 rounded-lg border border-on-surface px-5 py-2.5 text-sm font-medium text-on-surface transition hover:bg-surface-container">
+              Tüm {campaign.reviews.length} yorumu göster
+            </button>
+          )}
+        </>
+      ) : (
+        <p className="mt-4 text-sm text-on-surface-variant">Bu kampanya için henüz yorum yok.</p>
+      )}
+    </div>
+  );
+}
+
+/* ─────────────── Location & Map ─────────────── */
+
+function LocationMap({ location }) {
+  if (location?.mapEmbedUrl) {
+    return (
+      <div className="mt-4 overflow-hidden rounded-xl border border-outline-variant/30">
+        <iframe
+          src={location.mapEmbedUrl}
+          title="Kampanya konumu"
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          allowFullScreen
+          className="h-[220px] w-full md:h-[280px]"
+        />
+      </div>
+    );
+  }
+  if (location?.mapUrl) {
+    return (
+      <a
+        href={location.mapUrl}
+        target="_blank"
+        rel="noreferrer"
+        className="mt-4 flex h-[220px] flex-col items-center justify-center gap-3 rounded-xl border border-outline-variant/30 bg-surface-container-low/40 transition hover:bg-surface-container-low md:h-[280px]"
+      >
+        <span className="material-symbols-outlined text-5xl text-on-surface-variant/40">location_on</span>
+        <span className="rounded-lg border border-on-surface px-4 py-2 text-sm font-medium text-on-surface">Konumu haritada görüntüle</span>
+      </a>
+    );
+  }
+  return null;
+}
+
+function LocationSection({ campaign }) {
+  const loc = campaign.location;
+  const hasInfo = loc?.address || loc?.phone || loc?.workingHours;
+  const hasMap = loc?.mapEmbedUrl || loc?.mapUrl;
+  if (!hasInfo && !hasMap) return null;
+  return (
+    <DetailSection title="Konum ve İletişim" icon="location_on">
+      {hasInfo && (
+        <div className="space-y-2.5 text-[14px]">
+          {loc.address && <InfoRow icon="location_on">{loc.address}</InfoRow>}
+          {loc.phone && (
+            <div className="flex items-center gap-2.5 text-[13px]">
+              <span className="material-symbols-outlined text-[16px] text-on-surface-variant">call</span>
+              <a href={`tel:${loc.phone}`} className="text-on-surface-variant transition-colors hover:text-primary">{loc.phone}</a>
+            </div>
+          )}
+          {loc.workingHours && <InfoRow icon="schedule">{loc.workingHours}</InfoRow>}
+        </div>
+      )}
+      <LocationMap location={loc} />
+    </DetailSection>
   );
 }
 
@@ -671,40 +807,9 @@ function CampaignDetailPage() {
               </DetailSection>
             )}
 
-            {(campaign.location?.address || campaign.location?.phone || campaign.location?.workingHours) && (
-              <DetailSection title="Konum ve İletişim" icon="location_on">
-                <div className="space-y-2.5 text-[14px]">
-                  {campaign.location?.address && (
-                    <InfoRow icon="location_on">{campaign.location.address}</InfoRow>
-                  )}
-                  {campaign.location?.phone && (
-                    <div className="flex items-center gap-2.5 text-[13px]">
-                      <span className="material-symbols-outlined text-[16px] text-on-surface-variant">call</span>
-                      <a
-                        href={`tel:${campaign.location.phone}`}
-                        className="text-on-surface-variant transition-colors hover:text-primary"
-                      >
-                        {campaign.location.phone}
-                      </a>
-                    </div>
-                  )}
-                  {campaign.location?.workingHours && (
-                    <InfoRow icon="schedule">{campaign.location.workingHours}</InfoRow>
-                  )}
-                  {campaign.location?.mapUrl && (
-                    <a
-                      href={campaign.location.mapUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="mt-2 inline-flex items-center gap-1.5 rounded-lg border border-outline-variant/60 px-3 py-2 text-sm font-medium text-on-surface transition-colors hover:bg-surface-container"
-                    >
-                      <span className="material-symbols-outlined text-[16px]">map</span>
-                      Haritada Göster
-                    </a>
-                  )}
-                </div>
-              </DetailSection>
-            )}
+            <ReviewsSection campaign={campaign} />
+
+            <LocationSection campaign={campaign} />
 
             <FAQSection faq={campaign.faq} />
           </div>
