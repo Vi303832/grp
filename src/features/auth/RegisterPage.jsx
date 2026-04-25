@@ -45,11 +45,21 @@ export default function RegisterPage() {
       toast.success('Hesabınız oluşturuldu!');
       navigate('/', { replace: true });
     } catch (err) {
+      console.error('[RegisterPage] Kayıt hatası:', err);
+
       const messages = {
         'auth/email-already-in-use': 'Bu e-posta adresi zaten kullanılıyor.',
         'auth/weak-password': 'Şifre çok zayıf.',
+        'auth/invalid-email': 'Geçersiz e-posta adresi.',
+        'auth/network-request-failed': 'Ağ hatası. Bağlantınızı kontrol edin.',
+        'permission-denied':
+          'Profil kaydı reddedildi. Lütfen tekrar deneyin veya destek ile iletişime geçin.',
       };
-      toast.error(messages[err.code] ?? 'Kayıt başarısız. Tekrar deneyin.');
+
+      const code = err?.code ?? '';
+      toast.error(
+        messages[code] ?? `Kayıt başarısız: ${err?.message ?? 'Bilinmeyen hata'}`,
+      );
     }
   };
 

@@ -6,6 +6,7 @@ import {
   onAuthStateChanged,
   sendPasswordResetEmail,
   updateProfile,
+  deleteUser,
 } from 'firebase/auth';
 import { doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from '../lib/firebase';
@@ -52,21 +53,42 @@ const useAuthStore = create((set, get) => ({
   },
 
   register: async ({ displayName, email, password, phone }) => {
-    const credential = await createUserWithEmailAndPassword(auth, email, password);
+    const normalizedEmail = String(email ?? '').trim();
+    const credential = await createUserWithEmailAndPassword(
+      auth,
+      normalizedEmail,
+      password,
+    );
     const { user } = credential;
 
-    await updateProfile(user, { displayName });
+    // Token'daki email ile Firestore kuralı karşılaştırdığı için
+    // Auth'un sakladığı email değerini kullanıyoruz (case-preserved).
+    const canonicalEmail = user.email ?? normalizedEmail;
 
     const profile = {
-      displayName,
-      email,
-      phone: phone ?? '',
+      displayName: displayName.trim(),
+      email: canonicalEmail,
+      phone: phone?.trim() || '',
       cityId: 'bursa',
       role: 'user',
       createdAt: serverTimestamp(),
     };
 
-    await setDoc(doc(db, 'users', user.uid), profile);
+    try {
+      await setDoc(doc(db, 'users', user.uid), profile);
+      await updateProfile(user, { displayName: profile.displayName });
+    } catch (err) {
+      // Firestore yazımı başarısız olursa orphan Auth kaydı bırakma
+      // (aksi halde kullanıcı tekrar denediğinde "email-already-in-use" alır)
+      console.error('[auth.register] Firestore profil yazımı başarısız:', err);
+      try {
+        await deleteUser(user);
+      } catch (cleanupErr) {
+        console.error('[auth.register] Orphan auth temizlenemedi:', cleanupErr);
+      }
+      throw err;
+    }
+
     set({ user, userProfile: profile, role: 'user' });
     return user;
   },

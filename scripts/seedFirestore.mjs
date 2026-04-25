@@ -125,6 +125,87 @@ const now = Date.now();
 const IMG = (id, seed) =>
   `https://images.unsplash.com/${id}?auto=format&fit=crop&w=1000&q=80${seed ? `&sig=${seed}` : ''}`;
 
+// Kategori bazlı dummy galeri görselleri — her kampanyaya detayda
+// kaydırmalı 3'lü görsel sunumu için 2 ekstra yardımcı görsel eklenir.
+const GALLERY_IMAGES_BY_CATEGORY = {
+  restoran: [
+    'photo-1517248135467-4c7edcad34c4', // masa / mekan
+    'photo-1555396273-367ea4eb4db5',    // tabak / yemek
+    'photo-1466978913421-dad2ebd01d17',  // gece atmosfer
+  ],
+  guzellik: [
+    'photo-1522337360788-8b13dee7a37e', // salon
+    'photo-1596462502278-27bfdc403348', // cilt bakımı
+    'photo-1560066984-138dadb4c035',    // kuaför
+  ],
+  seyahat: [
+    'photo-1566073771259-6a8506099945', // otel cephe
+    'photo-1445019980597-93fa8acb246c', // oda
+    'photo-1520250497591-112f2f40a3f4', // havuz / deniz
+  ],
+  wellness: [
+    'photo-1540555700478-4be289fbecef', // spa
+    'photo-1544161515-4ab6ce6db874',    // masaj
+    'photo-1519824145371-296894a0daa9', // aroma / mum
+  ],
+  eglence: [
+    'photo-1503095396549-807759245b35', // tiyatro sahnesi
+    'photo-1507924538820-ede94a04019d', // salon / oturma
+    'photo-1514306191717-452ec28c7814', // ışık / sahne
+  ],
+  spor: [
+    'photo-1534438327276-14e5300c3a48', // fitness
+    'photo-1544367567-0f2fcb009e0b',    // yoga
+    'photo-1574680096145-d05b474e2155', // koşu
+  ],
+  egitim: [
+    'photo-1522202176988-66273c2fd55f',
+    'photo-1523240795612-9a054b0db644',
+    'photo-1524178232363-1fb2b075b655',
+  ],
+  alisveris: [
+    'photo-1483985988355-763728e1935b',
+    'photo-1441986300917-64674bd600d8',
+    'photo-1472851294608-062f824d29cc',
+  ],
+  otomotiv: [
+    'photo-1492144534655-ae79c964c9d7',
+    'photo-1580273916550-e323be2ae537',
+    'photo-1552519507-da3b142c6e3d',
+  ],
+  evcil: [
+    'photo-1587300003388-59208cc962cb',
+    'photo-1514888286974-6c03e2ca1dba',
+    'photo-1517849845537-4d257902454a',
+  ],
+  diger: [
+    'photo-1513151233558-d860c5398176',
+    'photo-1518791841217-8f162f1e1131',
+    'photo-1533090161767-e6ffed986c88',
+  ],
+};
+
+/**
+ * Kampanyanın images dizisini minimum 3'e genişletir.
+ * Mevcut görselleri korur, kategori havuzundan ek dummy'ler ekler.
+ */
+function expandGallery(campaign) {
+  const existing = Array.isArray(campaign.images) ? [...campaign.images] : [];
+  if (existing.length >= 3) return existing.slice(0, 3);
+
+  const pool = GALLERY_IMAGES_BY_CATEGORY[campaign.categoryId]
+    ?? GALLERY_IMAGES_BY_CATEGORY.diger;
+
+  // Tekrar etmemesi için küçük sapma seed'iyle ekle
+  let salt = 90 + (campaign.id?.length ?? 0);
+  for (const photoId of pool) {
+    if (existing.length >= 3) break;
+    const url = IMG(photoId, salt++);
+    if (!existing.includes(url)) existing.push(url);
+  }
+  return existing.slice(0, 3);
+}
+
 const demoCampaigns = [
   // ── Bursa — Spa & Wellness ───────────────────────────────────────
   {
@@ -1445,7 +1526,7 @@ function enrichCampaign(c, businessesById) {
     district: c.district,
     categoryId: c.categoryId,
     rating: c.rating,
-    images: c.images,
+    images: expandGallery(c),
 
     packages,
     ...aggregates,
