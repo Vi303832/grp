@@ -6,11 +6,13 @@ import RegisterPage from '../features/auth/RegisterPage';
 import ForgotPasswordPage from '../features/auth/ForgotPasswordPage';
 import GuestRoute from './GuestRoute';
 import NotFoundPage from '../pages/NotFoundPage';
+import ChunkErrorBoundary from '../components/error/ChunkErrorBoundary';
 
 const router = createBrowserRouter([
   // ─── Admin (full-screen layout, Navbar/Footer olmadan) ─────────────
   {
     path: '/admin',
+    errorElement: <ChunkErrorBoundary />,
     lazy: () => import('../features/admin/AdminLayout'),
     children: [
       {
@@ -61,6 +63,7 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <RootLayout />,
+    errorElement: <ChunkErrorBoundary />,
     children: [
       { index: true, element: <HomePage /> },
 
@@ -94,6 +97,7 @@ const router = createBrowserRouter([
       {
         path: 'kampanya/:slug',
         lazy: () => import('../features/campaigns/CampaignDetailPage'),
+        errorElement: <ChunkErrorBoundary />,
       },
 
       // Ödeme sonucu (iyzico callback placeholder)
