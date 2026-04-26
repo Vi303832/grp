@@ -67,9 +67,10 @@ export default function LoginPage() {
 
   if (!isProceeding) {
     return (
-      <div className="relative flex min-h-[calc(100vh-4rem)] items-center justify-center px-4 py-12 md:py-16 bg-[url('/images/auth-italy-bg.jpg')] bg-cover bg-center bg-no-repeat">
-        <div className="absolute inset-0 bg-black/35 z-0 pointer-events-none" />
-        <div className="relative z-10 w-full max-w-2xl bg-white/95 backdrop-blur-md rounded-3xl border border-white/20 p-8 md:p-12 shadow-2xl">
+      <div className="relative flex min-h-[calc(100vh-4rem)] items-center justify-center px-4 py-12 md:py-16 overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/images/auth-italy-bg.jpg')] bg-cover bg-center bg-no-repeat blur-[3px] scale-105 z-0" />
+        <div className="absolute inset-0 bg-black/45 z-0 pointer-events-none" />
+        <div className="relative z-10 w-full max-w-2xl bg-white/95 backdrop-blur-sm rounded-3xl border border-white/20 p-8 md:p-12 shadow-2xl">
           <div className="mb-10 text-center">
             <h1 className="font-headline text-2xl md:text-3xl font-extrabold text-on-surface">Nasıl devam etmek istersiniz?</h1>
             <p className="mt-2 text-sm font-label text-on-surface-variant">
