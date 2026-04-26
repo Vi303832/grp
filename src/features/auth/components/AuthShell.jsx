@@ -7,8 +7,9 @@ export default function AuthShell({
   onBack,
 }) {
   return (
-    <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-surface-container-low px-4 py-12 md:py-16">
-      <div className={`w-full ${sidePanel ? 'max-w-5xl' : 'max-w-md'} flex overflow-hidden rounded-3xl border border-outline-variant/20 bg-surface-container-lowest shadow-sm`}>
+    <div className="relative flex min-h-[calc(100vh-4rem)] items-center justify-center px-4 py-12 md:py-16 bg-[url('/images/auth-italy-bg.jpg')] bg-cover bg-center bg-no-repeat">
+      <div className="absolute inset-0 bg-black/35 z-0 pointer-events-none" />
+      <div className={`relative z-10 w-full ${sidePanel ? 'max-w-5xl' : 'max-w-md'} flex overflow-hidden rounded-3xl border border-white/20 bg-white/95 backdrop-blur-md shadow-2xl`}>
         
         {/* Sol/Sağ Panel - Sadece masaüstünde ve eğer sidePanel verildiyse görünür */}
         {sidePanel && (
