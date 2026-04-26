@@ -7,17 +7,9 @@ export default function AuthShell({
   onBack,
 }) {
   return (
-    <div className="relative flex min-h-[calc(100vh-4rem)] items-center justify-center px-4 py-12 md:py-16">
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <img
-          src="/images/auth-bg-landscape.jpg"
-          alt=""
-          className="h-full w-full object-cover object-[center_center]"
-        />
-        <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/35 to-black/60" />
-      </div>
-
-      <div className={`relative z-10 w-full ${sidePanel ? 'max-w-5xl' : 'max-w-md'} flex overflow-hidden rounded-3xl border border-white/30 bg-white/95 shadow-2xl`}>
+    <div className="relative flex min-h-[calc(100vh-4rem)] items-center justify-center px-4 py-12 md:py-16 bg-[url('/images/auth-italy-bg.jpg')] bg-cover bg-center bg-no-repeat">
+      <div className="absolute inset-0 bg-black/35 z-0 pointer-events-none" />
+      <div className={`relative z-10 w-full ${sidePanel ? 'max-w-5xl' : 'max-w-md'} flex overflow-hidden rounded-3xl border border-white/20 bg-white/95 backdrop-blur-md shadow-2xl`}>
         
         {/* Sol/Sağ Panel - Sadece masaüstünde ve eğer sidePanel verildiyse görünür */}
         {sidePanel && (
