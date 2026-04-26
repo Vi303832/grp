@@ -10,7 +10,7 @@ import MobileMiniNavbar from './MobileMiniNavbar';
 import MobileDrawer from './MobileDrawer';
 
 export default function Navbar() {
-  const { user, userProfile, signOut } = useAuthStore();
+  const { user, userProfile, role, signOut } = useAuthStore();
   const navigate = useNavigate();
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -126,7 +126,7 @@ export default function Navbar() {
                           Kuponlarım
                         </Link>
                         
-                        {userProfile?.role === 'admin' && (
+                        {role === 'admin' && (
                           <Link
                             to="/admin"
                             className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-label font-medium text-primary hover:bg-primary-fixed/30 transition-colors"
@@ -136,7 +136,7 @@ export default function Navbar() {
                             Admin Panel
                           </Link>
                         )}
-                        {userProfile?.role === 'business' && (
+                        {role === 'business' && (
                           <Link
                             to="/isletme"
                             className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-label font-medium text-primary hover:bg-primary-fixed/30 transition-colors"
