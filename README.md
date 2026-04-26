@@ -128,3 +128,9 @@ firebase deploy --only functions
 # Frontend
 npm run build && firebase deploy --only hosting
 ```
+
+> [!TIP]
+> Güvenlik kurallarındaki (`firestore.rules`) değişikliklerin projenizde aktif olması için konsolunuzda aşağıdaki komutu çalıştırarak rules'u deploy etmeniz faydalı olacaktır:
+> ```bash
+> firebase deploy --only firestore:rules
+> ```

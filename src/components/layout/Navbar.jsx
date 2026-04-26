@@ -66,69 +66,99 @@ export default function Navbar() {
           {/* Auth area */}
           <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
             {user ? (
-              <div className="relative">
+              <div className="relative z-50">
                 <button
                   onClick={() => setMenuOpen((v) => !v)}
-                  className="flex items-center gap-2 rounded-full px-2 py-1.5 text-sm font-label font-medium text-on-surface hover:bg-surface-container transition-colors sm:px-3"
+                  className="flex items-center gap-2 rounded-full border border-outline-variant/30 bg-surface px-2 py-1.5 text-sm font-label font-medium text-on-surface hover:shadow-md transition-all sm:px-3"
                 >
                   <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-container text-on-primary-container text-xs font-bold">
                     {userProfile?.displayName?.[0]?.toUpperCase() ??
                       user.email[0].toUpperCase()}
                   </span>
-                  <span className="hidden text-on-surface-variant lg:block">
+                  <span className="hidden text-on-surface lg:block">
                     {userProfile?.displayName ?? user.email}
+                  </span>
+                  <span className="material-symbols-outlined text-[18px] text-on-surface-variant/70">
+                    menu
                   </span>
                 </button>
 
                 {menuOpen && (
-                  <div className="absolute right-0 mt-2 w-52 rounded-xl bg-surface-container-lowest shadow-[0_8px_24px_rgba(28,28,25,0.12)]">
-                    <Link
-                      to="/hesabim"
-                      className="block rounded-t-xl px-4 py-2.5 text-sm font-label text-on-surface hover:bg-surface-container-low"
+                  <>
+                    <div 
+                      className="fixed inset-0 z-40" 
                       onClick={() => setMenuOpen(false)}
-                    >
-                      Hesabım
-                    </Link>
-                    <Link
-                      to="/hesabim/siparislerim"
-                      className="block px-4 py-2.5 text-sm font-label text-on-surface hover:bg-surface-container-low"
-                      onClick={() => setMenuOpen(false)}
-                    >
-                      Siparişlerim
-                    </Link>
-                    <Link
-                      to="/hesabim/kuponlarim"
-                      className="block px-4 py-2.5 text-sm font-label text-on-surface hover:bg-surface-container-low"
-                      onClick={() => setMenuOpen(false)}
-                    >
-                      Kuponlarım
-                    </Link>
-                    {userProfile?.role === 'admin' && (
-                      <Link
-                        to="/admin"
-                        className="block px-4 py-2.5 text-sm font-label text-primary hover:bg-primary-fixed/30"
-                        onClick={() => setMenuOpen(false)}
-                      >
-                        Admin Panel
-                      </Link>
-                    )}
-                    {userProfile?.role === 'business' && (
-                      <Link
-                        to="/isletme"
-                        className="block px-4 py-2.5 text-sm font-label text-primary hover:bg-primary-fixed/30"
-                        onClick={() => setMenuOpen(false)}
-                      >
-                        İşletme Paneli
-                      </Link>
-                    )}
-                    <div className="my-1 h-px bg-surface-container" />
-                    <button
-                      onClick={handleSignOut}
-                      className="w-full rounded-b-xl px-4 py-2.5 text-left text-sm font-label text-error hover:bg-error-container/30"
-                    >
-                      Çıkış Yap
-                    </button>
-                  </div>
+                      aria-label="Close menu"
+                    />
+                    <div className="absolute right-0 top-full mt-2 w-64 rounded-2xl border border-outline-variant/20 bg-surface-container-lowest p-2 shadow-lg z-50 overflow-hidden">
+                      <div className="px-3 py-3 border-b border-outline-variant/20 mb-2">
+                        <div className="font-headline font-bold text-sm text-on-surface truncate">
+                          {userProfile?.displayName || 'Kullanıcı'}
+                        </div>
+                        <div className="font-label text-xs text-on-surface-variant truncate">
+                          {user.email}
+                        </div>
+                      </div>
+
+                      <div className="flex flex-col gap-1">
+                        <Link
+                          to="/hesabim"
+                          className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-label font-medium text-on-surface hover:bg-surface-container transition-colors"
+                          onClick={() => setMenuOpen(false)}
+                        >
+                          <span className="material-symbols-outlined text-[20px] text-on-surface-variant">person</span>
+                          Hesabım
+                        </Link>
+                        <Link
+                          to="/hesabim/siparislerim"
+                          className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-label font-medium text-on-surface hover:bg-surface-container transition-colors"
+                          onClick={() => setMenuOpen(false)}
+                        >
+                          <span className="material-symbols-outlined text-[20px] text-on-surface-variant">receipt_long</span>
+                          Siparişlerim
+                        </Link>
+                        <Link
+                          to="/hesabim/kuponlarim"
+                          className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-label font-medium text-on-surface hover:bg-surface-container transition-colors"
+                          onClick={() => setMenuOpen(false)}
+                        >
+                          <span className="material-symbols-outlined text-[20px] text-on-surface-variant">confirmation_number</span>
+                          Kuponlarım
+                        </Link>
+                        
+                        {userProfile?.role === 'admin' && (
+                          <Link
+                            to="/admin"
+                            className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-label font-medium text-primary hover:bg-primary-fixed/30 transition-colors"
+                            onClick={() => setMenuOpen(false)}
+                          >
+                            <span className="material-symbols-outlined text-[20px]">admin_panel_settings</span>
+                            Admin Panel
+                          </Link>
+                        )}
+                        {userProfile?.role === 'business' && (
+                          <Link
+                            to="/isletme"
+                            className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-label font-medium text-primary hover:bg-primary-fixed/30 transition-colors"
+                            onClick={() => setMenuOpen(false)}
+                          >
+                            <span className="material-symbols-outlined text-[20px]">store</span>
+                            İşletme Paneli
+                          </Link>
+                        )}
+
+                        <div className="my-1 h-px bg-surface-container" />
+                        
+                        <button
+                          onClick={handleSignOut}
+                          className="flex items-center gap-3 w-full rounded-xl px-3 py-2.5 text-left text-sm font-label font-medium text-error hover:bg-error-container/50 transition-colors"
+                        >
+                          <span className="material-symbols-outlined text-[20px]">logout</span>
+                          Çıkış Yap
+                        </button>
+                      </div>
+                    </div>
+                  </>
                 )}
               </div>
             ) : (

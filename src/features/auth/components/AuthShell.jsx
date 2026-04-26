@@ -4,6 +4,7 @@ export default function AuthShell({
   children,
   footer,
   sidePanel,
+  onBack,
 }) {
   return (
     <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-surface-container-low px-4 py-12 md:py-16">
@@ -45,6 +46,17 @@ export default function AuthShell({
 
         {/* Ana Form Alanı */}
         <div className={`w-full p-8 md:p-12 ${sidePanel ? 'md:w-1/2' : ''}`}>
+          {onBack && (
+            <button
+              onClick={onBack}
+              className="mb-6 flex items-center gap-2 text-sm font-label font-medium text-on-surface-variant hover:text-on-surface transition-colors group"
+            >
+              <span className="material-symbols-outlined text-[20px] transition-transform group-hover:-translate-x-1">
+                arrow_back
+              </span>
+              Giriş türünü değiştir
+            </button>
+          )}
           <div className="mb-8">
             <h1 className="font-headline text-2xl font-extrabold tracking-tight text-on-surface md:text-3xl">
               {title}
