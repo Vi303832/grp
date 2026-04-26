@@ -1,78 +1,115 @@
 import { NavLink, Outlet } from 'react-router-dom';
 import ProtectedRoute from '../../router/ProtectedRoute';
-import PageWrapper from '../../components/layout/PageWrapper';
-import useAuthStore from '../../store/authStore';
 
 const links = [
-  { to: '/hesabim', label: 'Profilim', icon: 'person', end: true },
-  { to: '/hesabim/siparislerim', label: 'Siparişlerim', icon: 'receipt_long' },
+  { to: '/hesabim', label: 'Hakkımda', icon: 'person', end: true },
+  { to: '/hesabim/siparislerim', label: 'Satın almalar', icon: 'shopping_bag' },
   { to: '/hesabim/kuponlarim', label: 'Kuponlarım', icon: 'confirmation_number' },
 ];
 
 function UserPanelLayout() {
-  const { userProfile, user, role } = useAuthStore();
 
   return (
     <ProtectedRoute>
-      <PageWrapper>
-        <div className="mb-6">
-          <h1 className="font-headline text-2xl font-extrabold text-on-surface">Hesabım</h1>
-          <p className="mt-1 font-label text-sm text-on-surface-variant">
-            Profilini, siparişlerini ve kuponlarını buradan yönet.
-          </p>
-        </div>
+      {/* Beyaz sayfa arka planı */}
+      <div className="min-h-screen bg-white">
+        <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
 
-        <div className="flex flex-col gap-6 md:flex-row md:items-start md:gap-8">
-          <aside className="w-full shrink-0 md:w-64">
-            {/* Profil Özeti Kartı */}
-            <div className="mb-4 flex items-center gap-4 rounded-2xl border border-outline-variant/20 bg-surface-container-lowest p-4 shadow-sm">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary-fixed font-headline text-lg font-bold text-primary">
-                {userProfile?.displayName?.charAt(0).toUpperCase() || 'K'}
-              </div>
-              <div className="min-w-0 flex-1">
-                <h3 className="truncate font-headline text-sm font-bold text-on-surface">
-                  {userProfile?.displayName || 'Kullanıcı'}
-                </h3>
-                <p className="truncate font-label text-xs text-on-surface-variant">
-                  {user?.email}
-                </p>
-                {role && role !== 'user' && (
-                  <span className="mt-1 inline-block rounded bg-tertiary-container px-1.5 py-0.5 text-[10px] font-medium text-on-tertiary-container">
-                    {role.toUpperCase()}
-                  </span>
-                )}
-              </div>
-            </div>
+          {/* ── MOBİL: Üstte başlık + yatay tab ── */}
+          <div className="md:hidden">
+            <h1
+              className="mb-5 font-headline text-[26px] font-extrabold tracking-tight"
+              style={{ color: '#222222' }}
+            >
+              Profil
+            </h1>
 
-            {/* Navigasyon */}
-            <nav className="flex overflow-x-auto rounded-2xl border border-outline-variant/20 bg-surface-container-lowest p-2 shadow-sm md:flex-col md:overflow-visible">
+            <nav className="mb-6 flex gap-2 overflow-x-auto pb-1 scrollbar-none">
               {links.map(({ to, label, icon, end }) => (
                 <NavLink
                   key={to}
                   to={to}
                   end={end}
                   className={({ isActive }) =>
-                    `flex items-center gap-3 whitespace-nowrap rounded-xl px-4 py-3 text-sm font-label font-medium transition-colors ${
+                    `flex shrink-0 items-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium whitespace-nowrap transition-colors ${
                       isActive
-                        ? 'bg-primary-fixed text-primary'
-                        : 'text-on-surface-variant hover:bg-surface-container hover:text-on-surface'
+                        ? 'bg-[#222222] text-white'
+                        : 'bg-[#F7F7F7] text-[#717171] hover:bg-[#EBEBEB]'
                     }`
                   }
                 >
-                  <span className="material-symbols-outlined text-[20px]">
-                    {icon}
-                  </span>
+                  <span className="material-symbols-outlined text-[18px]">{icon}</span>
                   {label}
                 </NavLink>
               ))}
             </nav>
-          </aside>
+          </div>
 
-          <main className="min-w-0 flex-1">
-            <Outlet />
-          </main>
+          {/* ── DESKTOP: İki kolon layout ── */}
+          <div className="flex flex-col md:flex-row md:gap-12 lg:gap-16">
+            {/* Sol Sidebar — sadece desktopta görünür */}
+            <aside className="hidden shrink-0 md:block" style={{ width: 280 }}>
+              <h1
+                className="mb-8 font-headline text-[28px] font-extrabold tracking-tight"
+                style={{ color: '#222222' }}
+              >
+                Profil
+              </h1>
+
+              <nav className="flex flex-col gap-1">
+                {links.map(({ to, label, icon, end }) => (
+                  <NavLink
+                    key={to}
+                    to={to}
+                    end={end}
+                    className={({ isActive }) =>
+                      `group flex items-center gap-3.5 rounded-xl px-4 transition-colors ${
+                        isActive
+                          ? 'bg-[#F7F7F7]'
+                          : 'hover:bg-[#F7F7F7]'
+                      }`
+                    }
+                    style={{ minHeight: 56 }}
+                  >
+                    {({ isActive }) => (
+                      <>
+                        {/* Avatar/icon wrapper */}
+                        <span
+                          className={`flex h-10 w-10 items-center justify-center rounded-full text-lg transition-colors ${
+                            isActive
+                              ? 'bg-[#222222] text-white'
+                              : 'bg-[#EBEBEB] text-[#717171] group-hover:bg-[#DDDDDD]'
+                          }`}
+                        >
+                          <span className="material-symbols-outlined text-[20px]">{icon}</span>
+                        </span>
+
+                        <span
+                          className={`text-[15px] font-medium ${
+                            isActive ? 'text-[#222222]' : 'text-[#717171]'
+                          }`}
+                        >
+                          {label}
+                        </span>
+                      </>
+                    )}
+                  </NavLink>
+                ))}
+              </nav>
+            </aside>
+
+            {/* Vertical divider — desktopta */}
+            <div className="hidden md:block">
+              <div className="h-full w-px bg-[#EBEBEB]" />
+            </div>
+
+            {/* Sağ İçerik */}
+            <main className="min-w-0 flex-1">
+              <Outlet />
+            </main>
+          </div>
         </div>
-      </PageWrapper>
+      </div>
     </ProtectedRoute>
   );
 }
