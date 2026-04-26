@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import useAuthStore from '../../store/authStore';
 import { Button, Input } from '../../components/ui';
+import AuthShell from './components/AuthShell';
 
 const schema = z
   .object({
@@ -63,68 +64,78 @@ export default function RegisterPage() {
     }
   };
 
+  const sidePanelData = {
+    title: 'Avantajlarla dolu dünyaya katıl',
+    description: 'Hesabını oluştur, sevdiğin işletmelerin kampanyalarından hemen faydalanmaya başla.',
+    features: [
+      { icon: 'local_offer', text: 'Size özel indirimler' },
+      { icon: 'notifications_active', text: 'Yeni fırsatlardan ilk sen haberdar ol' },
+      { icon: 'history', text: 'Tüm siparişlerin elinin altında' },
+    ],
+  };
+
   return (
-    <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-surface-container-low px-4 py-12">
-      <div className="w-full max-w-md">
-        <div className="mb-8 text-center">
-          <h1 className="font-headline font-extrabold text-3xl text-on-surface">Hesap Oluştur</h1>
-          <p className="mt-2 font-label text-sm text-on-surface-variant">
-            Zaten hesabın var mı?{' '}
-            <Link to="/giris" className="font-semibold text-primary hover:underline underline-offset-2">
-              Giriş Yap
-            </Link>
-          </p>
+    <AuthShell
+      title="Hesap oluştur"
+      subtitle="Fırsatları kaydet, kuponlarını takip et ve satın alma geçmişini görüntüle."
+      sidePanel={sidePanelData}
+      footer={
+        <p className="text-center font-label text-sm text-on-surface-variant">
+          Zaten hesabın var mı?{' '}
+          <Link to="/giris" className="font-semibold text-primary hover:underline underline-offset-2">
+            Giriş Yap
+          </Link>
+        </p>
+      }
+    >
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <Input
+          label="Ad Soyad"
+          type="text"
+          autoComplete="name"
+          placeholder="Ahmet Yılmaz"
+          error={errors.displayName?.message}
+          {...register('displayName')}
+        />
+        <Input
+          label="E-posta"
+          type="email"
+          autoComplete="email"
+          placeholder="ornek@email.com"
+          error={errors.email?.message}
+          {...register('email')}
+        />
+        <Input
+          label="Telefon (isteğe bağlı)"
+          type="tel"
+          autoComplete="tel"
+          placeholder="05xxxxxxxxx"
+          error={errors.phone?.message}
+          {...register('phone')}
+        />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Input
+            label="Şifre"
+            type="password"
+            autoComplete="new-password"
+            placeholder="••••••••"
+            error={errors.password?.message}
+            {...register('password')}
+          />
+          <Input
+            label="Şifre Tekrar"
+            type="password"
+            autoComplete="new-password"
+            placeholder="••••••••"
+            error={errors.passwordConfirm?.message}
+            {...register('passwordConfirm')}
+          />
         </div>
 
-        <div className="rounded-2xl border border-outline-variant/20 bg-surface-container-lowest p-8 shadow-sm">
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <Input
-              label="Ad Soyad"
-              type="text"
-              autoComplete="name"
-              placeholder="Ahmet Yılmaz"
-              error={errors.displayName?.message}
-              {...register('displayName')}
-            />
-            <Input
-              label="E-posta"
-              type="email"
-              autoComplete="email"
-              placeholder="ornek@email.com"
-              error={errors.email?.message}
-              {...register('email')}
-            />
-            <Input
-              label="Telefon (isteğe bağlı)"
-              type="tel"
-              autoComplete="tel"
-              placeholder="05xxxxxxxxx"
-              error={errors.phone?.message}
-              {...register('phone')}
-            />
-            <Input
-              label="Şifre"
-              type="password"
-              autoComplete="new-password"
-              placeholder="••••••••"
-              error={errors.password?.message}
-              {...register('password')}
-            />
-            <Input
-              label="Şifre Tekrar"
-              type="password"
-              autoComplete="new-password"
-              placeholder="••••••••"
-              error={errors.passwordConfirm?.message}
-              {...register('passwordConfirm')}
-            />
-
-            <Button type="submit" className="w-full" loading={isSubmitting}>
-              Kayıt Ol
-            </Button>
-          </form>
-        </div>
-      </div>
-    </div>
+        <Button type="submit" className="w-full h-12 text-[15px] font-bold mt-2" loading={isSubmitting}>
+          Kayıt Ol
+        </Button>
+      </form>
+    </AuthShell>
   );
 }
