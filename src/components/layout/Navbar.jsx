@@ -66,8 +66,7 @@ export default function Navbar() {
           {/* Auth area */}
           <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
             {user ? (
-<<<<<<< HEAD
-              <div className="relative">
+              <div className="relative z-50">
                 <Link
                   to="/hesabim"
                   className="flex md:hidden items-center rounded-full p-1.5 text-on-surface transition-colors hover:bg-surface-container"
@@ -79,175 +78,160 @@ export default function Navbar() {
                   </span>
                 </Link>
 
-=======
-              <div className="relative z-50">
->>>>>>> 10ef69004ca0b11cbbfe8616546584783f47f935
-                  utton
-                  pe="button"
-                  Click={() => setMenuOpen((v) => !v)}
-<<<<<<< HEAD
-  assName = "hidden md:flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-label font-medium text-on-surface hover:bg-surface-container transition-colors"
-=======
-                  className="flex items-center gap-2 rounded-full border border-outline-variant/30 bg-surface px-2 py-1.5 text-sm font-label font-medium text-on-surface hover:shadow-md transition-all sm:px-3"
->>>>>>> 10ef69004ca0b11cbbfe8616546584783f47f935
-                
-                  pan className = "flex h-8 w-8 items-center justify-center rounded-full bg-primary-container text-on-primary-container text-xs font-bold" >
-    serProfile?.displayName?.[0]?.toUpperCase() ??
-    er.email[0].toUpperCase()
-}
-span >
-  pan className = "hidden text-on-surface lg:block" >
-    serProfile?.displayName ?? user.email}
-span >
-  pan className = "material-symbols-outlined text-[18px] text-on-surface-variant/70" >
-    nu
-span >
-  button >
+                <button
+                  type="button"
+                  onClick={() => setMenuOpen((v) => !v)}
+                  className="hidden md:flex items-center gap-2 rounded-full border border-outline-variant/30 bg-surface px-2 py-1.5 text-sm font-label font-medium text-on-surface hover:shadow-md transition-all sm:px-3"
+                >
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-container text-on-primary-container text-xs font-bold">
+                    {userProfile?.displayName?.[0]?.toUpperCase() ??
+                      user.email[0].toUpperCase()}
+                  </span>
+                  <span className="hidden text-on-surface lg:block">
+                    {userProfile?.displayName ?? user.email}
+                  </span>
+                  <span className="material-symbols-outlined text-[18px] text-on-surface-variant/70">
+                    menu
+                  </span>
+                </button>
 
-  enuOpen && (
-<<<<<<< HEAD
-    iv className = "absolute right-0 mt-2 hidden w-52 rounded-xl bg-surface-container-lowest shadow-[0_8px_24px_rgba(28,28,25,0.12)] md:block" >
-      ink
-                      ="/hesabim"
-assName = "block rounded-t-xl px-4 py-2.5 text-sm font-label text-on-surface hover:bg-surface-container-low"
-=======
+                {menuOpen && (
                   <>
                     <div
                       className="fixed inset-0 z-40"
->>>>>>> 10ef69004ca0b11cbbfe8616546584783f47f935
-Click = {() => setMenuOpen(false)}
-ia - label="Close menu"
+                      onClick={() => setMenuOpen(false)}
+                      aria-label="Close menu"
+                    />
                     
-                    iv className = "absolute right-0 top-full mt-2 w-64 rounded-2xl border border-outline-variant/20 bg-surface-container-lowest p-2 shadow-lg z-50 overflow-hidden" >
-  iv className = "px-3 py-3 border-b border-outline-variant/20 mb-2" >
-    iv className = "font-headline font-bold text-sm text-on-surface truncate" >
-      serProfile?.displayName || 'Kullanıcı'}
-div >
-  iv className = "font-label text-xs text-on-surface-variant truncate" >
-    ser.email}
-div >
-  div >
+                    <div className="absolute right-0 top-full mt-2 w-64 rounded-2xl border border-outline-variant/20 bg-surface-container-lowest p-2 shadow-lg z-50 overflow-hidden">
+                      <div className="px-3 py-3 border-b border-outline-variant/20 mb-2">
+                        <div className="font-headline font-bold text-sm text-on-surface truncate">
+                          {userProfile?.displayName || 'Kullanıcı'}
+                        </div>
+                        <div className="font-label text-xs text-on-surface-variant truncate">
+                          {user.email}
+                        </div>
+                      </div>
 
-  iv className = "flex flex-col gap-1" >
-    ink
-                          ="/hesabim"
-assName = "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-label font-medium text-on-surface hover:bg-surface-container transition-colors"
-Click = {() => setMenuOpen(false)}
-                        
-                          pan className = "material-symbols-outlined text-[20px] text-on-surface-variant" > person</span >
-  sabım
-Link >
-  ink
-                          ="/hesabim/siparislerim"
-assName = "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-label font-medium text-on-surface hover:bg-surface-container transition-colors"
-Click = {() => setMenuOpen(false)}
-                        
-                          pan className = "material-symbols-outlined text-[20px] text-on-surface-variant" > receipt_long</span >
-  parişlerim
-Link >
-  ink
-                          ="/hesabim/kuponlarim"
-assName = "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-label font-medium text-on-surface hover:bg-surface-container transition-colors"
-Click = {() => setMenuOpen(false)}
-                        
-                          pan className = "material-symbols-outlined text-[20px] text-on-surface-variant" > confirmation_number</span >
-  ponlarım
-Link >
+                      <div className="flex flex-col gap-1">
+                        <Link
+                          to="/hesabim"
+                          className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-label font-medium text-on-surface hover:bg-surface-container transition-colors"
+                          onClick={() => setMenuOpen(false)}
+                        >
+                          <span className="material-symbols-outlined text-[20px] text-on-surface-variant">person</span>
+                          Hesabım
+                        </Link>
+                        <Link
+                          to="/hesabim/siparislerim"
+                          className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-label font-medium text-on-surface hover:bg-surface-container transition-colors"
+                          onClick={() => setMenuOpen(false)}
+                        >
+                          <span className="material-symbols-outlined text-[20px] text-on-surface-variant">receipt_long</span>
+                          Siparişlerim
+                        </Link>
+                        <Link
+                          to="/hesabim/kuponlarim"
+                          className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-label font-medium text-on-surface hover:bg-surface-container transition-colors"
+                          onClick={() => setMenuOpen(false)}
+                        >
+                          <span className="material-symbols-outlined text-[20px] text-on-surface-variant">confirmation_number</span>
+                          Kuponlarım
+                        </Link>
 
-  ole === 'admin' && (
-    ink
-    = "/admin"
-                            assName = "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-label font-medium text-primary hover:bg-primary-fixed/30 transition-colors"
-Click = {() => setMenuOpen(false)}
-                          
-                            pan className = "material-symbols-outlined text-[20px]" > admin_panel_settings</span >
-  min Panel
-Link >
+                        {role === 'admin' && (
+                          <Link
+                            to="/admin"
+                            className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-label font-medium text-primary hover:bg-primary-fixed/30 transition-colors"
+                            onClick={() => setMenuOpen(false)}
+                          >
+                            <span className="material-symbols-outlined text-[20px]">admin_panel_settings</span>
+                            Admin Panel
+                          </Link>
+                        )}
 
-  ole === 'business' && (
-    ink
-    = "/isletme"
-                            assName = "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-label font-medium text-primary hover:bg-primary-fixed/30 transition-colors"
-Click = {() => setMenuOpen(false)}
-                          
-                            pan className = "material-symbols-outlined text-[20px]" > store</span >
-  letme Paneli
-Link >
+                        {role === 'business' && (
+                          <Link
+                            to="/isletme"
+                            className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-label font-medium text-primary hover:bg-primary-fixed/30 transition-colors"
+                            onClick={() => setMenuOpen(false)}
+                          >
+                            <span className="material-symbols-outlined text-[20px]">store</span>
+                            İşletme Paneli
+                          </Link>
+                        )}
 
+                        <div className="my-1 h-px bg-surface-container" />
 
-  iv className = "my-1 h-px bg-surface-container" />
-
-    utton
-Click = { handleSignOut }
-assName = "flex items-center gap-3 w-full rounded-xl px-3 py-2.5 text-left text-sm font-label font-medium text-error hover:bg-error-container/50 transition-colors"
-                        
-                          pan className = "material-symbols-outlined text-[20px]" > logout</span >
-  kış Yap
-button >
-  div >
-  div >
-                  >
-
-  div >
-  (
-
-    utton
-                  riant = "ghost"
-ze = "sm"
-assName = "hidden sm:inline-flex"
-Click = {() => navigate('/giris')}
-                
-                  riş Yap
-Button >
-  utton
-riant = "primary"
-ze = "sm"
-Click = {() => navigate('/kayit')}
-                
-                  yıt Ol
-Button >
-              >
+                        <button
+                          onClick={handleSignOut}
+                          className="flex items-center gap-3 w-full rounded-xl px-3 py-2.5 text-left text-sm font-label font-medium text-error hover:bg-error-container/50 transition-colors"
+                        >
+                          <span className="material-symbols-outlined text-[20px]">logout</span>
+                          Çıkış Yap
+                        </button>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
+            ) : (
+              <>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="hidden sm:inline-flex"
+                  onClick={() => navigate('/giris')}
+                >
+                  Giriş Yap
+                </Button>
+                <Button
+                  variant="primary"
+                  size="sm"
+                  onClick={() => navigate('/kayit')}
+                >
+                  Kayıt Ol
+                </Button>
+              </>
             )}
-v >
-        </div >
+          </div>
+        </div>
 
-        * Mobil arama(yalnızca ana sayfa) */}
-sHome && (
-  iv className = "px-3 pb-2 md:hidden" >
-    omeNavSearch />
-    div >
-        
+        {/* Mobil arama (yalnızca ana sayfa) */}
+        {isHome && (
+          <div className="px-3 pb-2 md:hidden">
+            <HomeNavSearch />
+          </div>
+        )}
 
-        * Kategori şeridi — PC + mobil için scrollable, sadece ana sayfa */}
-sHome && (
-  iv className = "bg-surface" >
-    iv className = "mx-auto max-w-7xl px-3 sm:px-4" >
-      omeCategoryStrip />
-      div >
-      div >
-        
-      </header >
+        {/* Kategori şeridi — PC + mobil için scrollable, sadece ana sayfa */}
+        {isHome && (
+          <div className="bg-surface">
+            <div className="mx-auto max-w-7xl px-3 sm:px-4">
+              <HomeCategoryStrip />
+            </div>
+          </div>
+        )}
+      </header>
 
-  {/* Mobil kompakt navbar — scroll sonrası görünür */ }
-  < div
-className = {
-  cn(
+      {/* Mobil kompakt navbar — scroll sonrası görünür */}
+      <div
+        className={cn(
           'fixed inset-x-0 top-0 z-40 bg-surface/95 backdrop-blur-md transition-transform duration-300 ease-out md:hidden',
-    scrolled
-      ? 'translate-y-0 shadow-[0_6px_20px_rgba(14,13,49,0.08)]'
+          scrolled
+            ? 'translate-y-0 shadow-[0_6px_20px_rgba(14,13,49,0.08)]'
             : '-translate-y-full',
-  )
-}
-  >
-  <MobileMiniNavbar
-    isHome={isHome}
-    onOpenDrawer={() => setDrawerOpen(true)}
-    onSearchClick={handleMiniSearch}
-  />
-      </div >
+        )}
+      >
+        <MobileMiniNavbar
+          isHome={isHome}
+          onOpenDrawer={() => setDrawerOpen(true)}
+          onSearchClick={handleMiniSearch}
+        />
+      </div>
 
-  {/* Soldan açılan mobil menü */ }
-  < MobileDrawer open = { drawerOpen } onClose = {() => setDrawerOpen(false)} />
+      {/* Soldan açılan mobil menü */}
+      <MobileDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
     </>
   );
 }
