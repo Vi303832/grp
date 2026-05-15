@@ -1,8 +1,8 @@
 import { Helmet } from 'react-helmet-async';
 
-const DEFAULT_TITLE = "GRP Kampanya — Bursa'nın En İyi Fırsatları";
+const DEFAULT_TITLE = 'GRP Kampanya — En İyi Fırsatlar';
 const DEFAULT_DESCRIPTION =
-  "Bursa'nın en iyi kampanya ve kupon platformu. Spa, restoran, aktivite ve daha fazlası için özel fırsatlar.";
+  'Kampanya ve kupon platformu. Spa, restoran, aktivite ve daha fazlası için özel fırsatlar.';
 
 /**
  * Sayfa bazlı meta tag bileşeni.

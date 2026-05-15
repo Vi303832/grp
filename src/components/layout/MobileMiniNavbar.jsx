@@ -7,7 +7,7 @@ import useHomeFilters from '../../features/campaigns/hooks/useHomeFilters';
  * Mobil, scroll sonrası görünen kompakt navbar.
  *
  *  [ ☰ ]      Keşfet        [ 🔍 ]
- *           Bursa ▼
+ *           Şehir ▼
  */
 export default function MobileMiniNavbar({ onOpenDrawer, onSearchClick, isHome = true }) {
   const { data: cities = [] } = useCities();

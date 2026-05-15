@@ -67,9 +67,21 @@ export default function Navbar() {
           <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
             {user ? (
               <div className="relative">
+                <Link
+                  to="/hesabim"
+                  className="flex md:hidden items-center rounded-full p-1.5 text-on-surface transition-colors hover:bg-surface-container"
+                  aria-label="Hesabım"
+                >
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-container text-on-primary-container text-xs font-bold">
+                    {userProfile?.displayName?.[0]?.toUpperCase() ??
+                      user.email[0].toUpperCase()}
+                  </span>
+                </Link>
+
                 <button
+                  type="button"
                   onClick={() => setMenuOpen((v) => !v)}
-                  className="flex items-center gap-2 rounded-full px-2 py-1.5 text-sm font-label font-medium text-on-surface hover:bg-surface-container transition-colors sm:px-3"
+                  className="hidden md:flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-label font-medium text-on-surface hover:bg-surface-container transition-colors"
                 >
                   <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-container text-on-primary-container text-xs font-bold">
                     {userProfile?.displayName?.[0]?.toUpperCase() ??
@@ -81,7 +93,7 @@ export default function Navbar() {
                 </button>
 
                 {menuOpen && (
-                  <div className="absolute right-0 mt-2 w-52 rounded-xl bg-surface-container-lowest shadow-[0_8px_24px_rgba(28,28,25,0.12)]">
+                  <div className="absolute right-0 mt-2 hidden w-52 rounded-xl bg-surface-container-lowest shadow-[0_8px_24px_rgba(28,28,25,0.12)] md:block">
                     <Link
                       to="/hesabim"
                       className="block rounded-t-xl px-4 py-2.5 text-sm font-label text-on-surface hover:bg-surface-container-low"

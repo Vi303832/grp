@@ -153,27 +153,27 @@ function CampaignFormPage() {
         packages:
           existing.packages?.length > 0
             ? existing.packages.map((p) => ({
-                id: p.id ?? newPackageId(),
-                name: p.name ?? '',
-                description: p.description ?? '',
-                price: p.price ?? 0,
-                originalPrice: p.originalPrice ?? 0,
-                quota: p.quota ?? 0,
-                soldCount: p.soldCount ?? 0,
-                isDefault: p.isDefault ?? false,
-              }))
+              id: p.id ?? newPackageId(),
+              name: p.name ?? '',
+              description: p.description ?? '',
+              price: p.price ?? 0,
+              originalPrice: p.originalPrice ?? 0,
+              quota: p.quota ?? 0,
+              soldCount: p.soldCount ?? 0,
+              isDefault: p.isDefault ?? false,
+            }))
             : [
-                {
-                  id: newPackageId(),
-                  name: 'Standart Paket',
-                  description: '',
-                  price: existing.price ?? 0,
-                  originalPrice: existing.originalPrice ?? 0,
-                  quota: existing.quota ?? 0,
-                  soldCount: existing.soldCount ?? 0,
-                  isDefault: true,
-                },
-              ],
+              {
+                id: newPackageId(),
+                name: 'Standart Paket',
+                description: '',
+                price: existing.price ?? 0,
+                originalPrice: existing.originalPrice ?? 0,
+                quota: existing.quota ?? 0,
+                soldCount: existing.soldCount ?? 0,
+                isDefault: true,
+              },
+            ],
         highlights: existing.highlights ?? [],
         included: existing.included ?? [],
         notIncluded: existing.notIncluded ?? [],

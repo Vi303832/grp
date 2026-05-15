@@ -79,7 +79,7 @@ function renderHtml({ displayName, campaignTitle, couponCodes, expiresAt }) {
       <p>Kupon kodlarınız:</p>
       ${codesHtml}
       ${expiresAt ? `<p>Son kullanım: ${expiresAt.toLocaleDateString('tr-TR')}</p>` : ''}
-      <p style="color:#5a5b71;font-size:13px;margin-top:24px;">GRP Kampanya · Bursa</p>
+      <p style="color:#5a5b71;font-size:13px;margin-top:24px;">GRP Kampanya</p>
     </div>
   `;
 }

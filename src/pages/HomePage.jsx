@@ -95,8 +95,11 @@ export default function HomePage() {
                 Haftanın Seçkileri
               </p>
               <h2 className="font-headline font-extrabold text-2xl text-on-surface sm:text-3xl md:text-4xl">
-                {selectedCity?.name ?? 'Türkiye'}&apos;de Öne Çıkan Kampanyalar
+                Öne Çıkan Kampanyalar
               </h2>
+              <p className="mt-1 font-body text-sm text-on-surface-variant sm:text-base">
+                Şehrindeki seçilmiş fırsatlar
+              </p>
             </div>
 
             <HomeCitySelect
@@ -134,7 +137,7 @@ export default function HomePage() {
               <CampaignRow
                 key={category.id}
                 title={category.name}
-                subtitle={`${items.length} kampanya · ${selectedCity?.name ?? ''}`}
+                subtitle={`${items.length} kampanya`}
                 icon={category.icon}
                 campaigns={items}
                 onSeeAll={() => updateFilters({ categoryId: category.id })}
@@ -198,11 +201,19 @@ export default function HomePage() {
         </section>
       )}
 
+      <HomeBottomSections
+        categories={categories}
+        campaignCount={allCampaigns.length}
+        cityCount={cities.length}
+        onCategorySelect={(id) => updateFilters({ categoryId: id })}
+        onClearFilters={() => updateFilters({ categoryId: 'all', query: '' })}
+      />
+
       {/* ── NEWSLETTER ───────────────────────────────────────────── */}
       <section className="bg-surface-container-low py-14 sm:py-20">
         <div className="mx-auto max-w-2xl px-4 text-center sm:px-6 md:px-8">
           <span className="material-symbols-outlined mb-4 block text-4xl text-primary sm:mb-5">
-            spa
+            mail
           </span>
           <p className="mb-2 text-xs font-label font-bold uppercase tracking-widest text-primary">
             Haberdar Ol
@@ -211,7 +222,7 @@ export default function HomePage() {
             Fırsatları Kaçırma
           </h2>
           <p className="mb-8 font-body text-sm leading-relaxed text-on-surface-variant sm:mb-10 sm:text-base">
-            Yeni kampanyalar ve davetiye özel tekliflerden ilk sen haberdar ol.
+            Yeni kampanyalardan ve size özel fırsatlardan ilk siz haberdar olun.
           </p>
           <form
             onSubmit={(e) => e.preventDefault()}
@@ -229,6 +240,329 @@ export default function HomePage() {
         </div>
       </section>
     </>
+  );
+}
+
+const HOW_IT_WORKS = [
+  {
+    icon: 'search',
+    title: 'Keşfet',
+    text: 'Şehrindeki kampanyalara göz atın; kategori veya arama ile aradığınızı bulun.',
+  },
+  {
+    icon: 'shopping_cart',
+    title: 'Satın Alın',
+    text: 'Beğendiğiniz teklifi seçin, güvenli ödeme ile işleminizi tamamlayın.',
+  },
+  {
+    icon: 'confirmation_number',
+    title: 'Kullanın',
+    text: 'Kuponunuzu hesabınızdan açın; işletmede kodu veya QR ile fırsatınızı kullanın.',
+  },
+];
+
+const VALUE_PROPS = [
+  {
+    icon: 'verified',
+    title: 'Güvenilir İşletmeler',
+    text: 'Kampanyalar anlaşmalı iş ortaklarımızdan gelir; alışverişinizi güvenle yapın.',
+  },
+  {
+    icon: 'savings',
+    title: 'Net Tasarruf',
+    text: 'İndirimli fiyatlar ve paket seçenekleriyle bütçenize uygun teklifler.',
+  },
+  {
+    icon: 'schedule',
+    title: 'Açık Süreler',
+    text: 'Bitiş tarihleri her kampanyada görünür; planınızı önceden yapın.',
+  },
+  {
+    icon: 'support_agent',
+    title: 'Yanınızdayız',
+    text: 'Sipariş ve kupon süreçlerinde destek ekibimizden yardım alın.',
+  },
+];
+
+const FAQ_ITEMS = [
+  {
+    q: 'Kuponumu nasıl kullanırım?',
+    a: 'Satın alma sonrası kuponunuz Hesabım → Kuponlarım bölümünde görünür. İşletmede ekrandaki kodu veya QR’ı göstermeniz yeterlidir.',
+  },
+  {
+    q: 'Kampanyalar şehre göre mi listeleniyor?',
+    a: 'Evet. Üst menüden şehrinizi seçerek o bölgedeki güncel fırsatları görebilirsiniz.',
+  },
+  {
+    q: 'İade veya iptal yapabilir miyim?',
+    a: 'Kullanılmamış kuponlar için kampanya koşullarına bağlı iptal mümkündür. Detaylar her kampanya sayfasında yer alır.',
+  },
+  {
+    q: 'İşletmem için kampanya yayınlayabilir miyim?',
+    a: 'Evet. İşletme Başvurusu formunu doldurun; onay sonrası kampanyanızı panelden yönetebilirsiniz.',
+  },
+];
+
+function SectionHeader({ eyebrow, title, description, align = 'center', className = '' }) {
+  const alignClass = align === 'center' ? 'text-center mx-auto' : 'text-left';
+
+  return (
+    <div className={`mb-10 max-w-2xl md:mb-14 ${alignClass} ${className}`}>
+      <p className="mb-1 text-xs font-label font-bold uppercase tracking-widest text-primary">
+        {eyebrow}
+      </p>
+      <h2 className="font-headline font-extrabold text-2xl text-on-surface sm:text-3xl md:text-4xl">
+        {title}
+      </h2>
+      {description && (
+        <p className="mt-3 font-body text-sm leading-relaxed text-on-surface-variant sm:text-base">
+          {description}
+        </p>
+      )}
+    </div>
+  );
+}
+
+function HomeBottomSections({
+  categories,
+  campaignCount,
+  cityCount,
+  onCategorySelect,
+  onClearFilters,
+}) {
+  const statCampaigns = campaignCount > 0 ? `${campaignCount}+` : '—';
+  const statCategories = categories.length > 0 ? String(categories.length) : '—';
+  const statCities = cityCount > 0 ? String(cityCount) : '—';
+
+  const stats = [
+    { value: statCampaigns, label: 'Aktif kampanya', icon: 'local_offer' },
+    { value: statCategories, label: 'Kategori', icon: 'category' },
+    { value: statCities, label: 'Hizmet verilen şehir', icon: 'location_city' },
+  ];
+
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  return (
+    <div className="border-t border-outline/10">
+      {/* ── NASIL ÇALIŞIR ─────────────────────────────────────────── */}
+      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24 md:px-8">
+        <SectionHeader
+          eyebrow="Üç Adımda"
+          title="Nasıl Çalışır?"
+          description="Şehrinizdeki fırsatları keşfedin, satın alın ve işletmede kolayca kullanın."
+        />
+
+        <ol className="grid gap-6 sm:grid-cols-3 sm:gap-8">
+          {HOW_IT_WORKS.map((step, i) => (
+            <li
+              key={step.title}
+              className="flex flex-col rounded-3xl bg-surface-container-lowest p-6 shadow-[0_12px_40px_rgba(26,20,107,0.06)] transition hover:shadow-[0_16px_48px_rgba(26,20,107,0.09)] sm:p-8"
+            >
+              <div className="mb-5 flex items-center gap-4">
+                <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-primary/10">
+                  <span
+                    className="material-symbols-outlined text-[28px] leading-none text-primary"
+                    aria-hidden="true"
+                  >
+                    {step.icon}
+                  </span>
+                </span>
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-xs font-label font-bold text-on-primary">
+                  {i + 1}
+                </span>
+              </div>
+              <h3 className="mb-2 font-headline font-bold text-lg text-on-surface">{step.title}</h3>
+              <p className="font-body text-sm leading-relaxed text-on-surface-variant">{step.text}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      {/* ── RAKAMLAR ──────────────────────────────────────────────── */}
+      <section className="bg-surface-container-low py-12 sm:py-16">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-4 px-4 sm:grid-cols-3 sm:gap-6 sm:px-6 md:px-8">
+          {stats.map((stat) => (
+            <div
+              key={stat.label}
+              className="flex flex-col items-center gap-3 rounded-2xl bg-surface-container-lowest px-6 py-8 text-center"
+            >
+              <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
+                <span
+                  className="material-symbols-outlined text-2xl leading-none text-primary"
+                  aria-hidden="true"
+                >
+                  {stat.icon}
+                </span>
+              </span>
+              <div>
+                <p className="font-headline font-extrabold text-3xl text-on-surface">{stat.value}</p>
+                <p className="mt-0.5 text-sm font-label text-on-surface-variant">{stat.label}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── NEDEN GRP ─────────────────────────────────────────────── */}
+      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24 md:px-8">
+        <SectionHeader
+          eyebrow="Avantajlar"
+          title="Neden GRP?"
+          description="Kampanya alışverişini sade, güvenilir ve şeffaf hale getiriyoruz."
+          align="left"
+        />
+        <div className="grid gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4">
+          {VALUE_PROPS.map((item) => (
+            <div
+              key={item.title}
+              className="group rounded-3xl bg-surface-container-low p-6 transition hover:bg-surface-container-lowest hover:shadow-[0_12px_40px_rgba(26,20,107,0.06)]"
+            >
+              <span className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 transition group-hover:bg-primary">
+                <span
+                  className="material-symbols-outlined text-2xl leading-none text-primary transition group-hover:text-on-primary"
+                  aria-hidden="true"
+                >
+                  {item.icon}
+                </span>
+              </span>
+              <h3 className="mb-2 font-headline font-bold text-base text-on-surface">{item.title}</h3>
+              <p className="font-body text-sm leading-relaxed text-on-surface-variant">{item.text}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── KATEGORİLER ───────────────────────────────────────────── */}
+      {categories.length > 0 && (
+        <section className="bg-surface-container-low py-16 sm:py-24">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
+            <div className="mb-8 flex flex-col gap-3 sm:mb-10 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p className="mb-1 text-xs font-label font-bold uppercase tracking-widest text-primary">
+                  Keşfet
+                </p>
+                <h2 className="font-headline font-extrabold text-2xl text-on-surface sm:text-3xl">
+                  Kategorilere Göz Atın
+                </h2>
+                <p className="mt-2 font-body text-sm text-on-surface-variant">
+                  İlgi alanınıza göre şehrinizdeki kampanyaları filtreleyin.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  onClearFilters?.();
+                  scrollToTop();
+                }}
+                className="inline-flex shrink-0 items-center gap-1 self-start rounded-full bg-surface-container-highest px-4 py-2 text-sm font-label font-semibold text-primary transition hover:bg-primary hover:text-on-primary sm:self-auto"
+              >
+                Tüm kampanyalar
+                <span className="material-symbols-outlined text-base">arrow_upward</span>
+              </button>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
+              {categories.slice(0, 8).map((cat) => (
+                <button
+                  key={cat.id}
+                  type="button"
+                  onClick={() => {
+                    onCategorySelect?.(cat.id);
+                    scrollToTop();
+                  }}
+                  className="group flex flex-col items-center gap-3 rounded-2xl bg-surface-container-lowest px-4 py-6 text-center transition hover:-translate-y-0.5 hover:bg-surface-container-highest hover:shadow-[0_8px_24px_rgba(26,20,107,0.08)]"
+                >
+                  {cat.icon ? (
+                    <span className="material-symbols-outlined text-3xl text-primary transition group-hover:scale-110">
+                      {cat.icon}
+                    </span>
+                  ) : (
+                    <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-sm font-headline font-bold text-primary">
+                      {cat.name?.charAt(0)}
+                    </span>
+                  )}
+                  <span className="font-label text-sm font-semibold text-on-surface">
+                    {cat.name}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ── İŞLETME CTA ───────────────────────────────────────────── */}
+      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 md:px-8">
+        <div className="relative flex flex-col items-start gap-6 overflow-hidden rounded-3xl bg-dark-surface px-8 py-10 text-on-dark-surface sm:flex-row sm:items-center sm:justify-between sm:px-12 sm:py-14">
+          <span
+            aria-hidden
+            className="pointer-events-none absolute -top-20 -right-20 h-64 w-64 rounded-full bg-primary/30 blur-3xl"
+          />
+          <span
+            aria-hidden
+            className="pointer-events-none absolute -bottom-16 -left-16 h-48 w-48 rounded-full bg-primary-container/40 blur-3xl"
+          />
+          <div className="relative max-w-lg">
+            <p className="mb-2 text-xs font-label font-bold uppercase tracking-widest text-primary-container/80">
+              İş Ortaklığı
+            </p>
+            <h2 className="mb-3 font-headline font-extrabold text-2xl sm:text-3xl">
+              İşletmeniz İçin Kampanya Yayınlayın
+            </h2>
+            <p className="font-body text-sm leading-relaxed text-on-dark-surface/75 sm:text-base">
+              Yeni müşterilere ulaşın, tekliflerinizi yönetin ve satışlarınızı tek panelden
+              takip edin.
+            </p>
+          </div>
+          <div className="relative flex shrink-0 flex-col gap-3 sm:flex-row">
+            <Link
+              to="/isletme-basvurusu"
+              className="bg-primary-gradient inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-label font-semibold text-on-primary transition hover:opacity-90"
+            >
+              Başvuru Yapın
+              <span className="material-symbols-outlined text-base">arrow_forward</span>
+            </Link>
+            <Link
+              to="/isletme"
+              className="inline-flex items-center justify-center rounded-full bg-white/10 px-6 py-3.5 text-sm font-label font-semibold text-on-dark-surface ring-1 ring-white/10 transition hover:bg-white/15"
+            >
+              İşletme Girişi
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── SSS ───────────────────────────────────────────────────── */}
+      <section className="bg-surface-container-low py-16 sm:py-24">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 md:px-8">
+          <SectionHeader
+            eyebrow="Yardım"
+            title="Sık Sorulan Sorular"
+            description="Merak ettiklerinize hızlı yanıtlar."
+          />
+          <div className="flex flex-col gap-3">
+            {FAQ_ITEMS.map((item) => (
+              <details
+                key={item.q}
+                className="group rounded-2xl bg-surface-container-lowest px-5 py-4 transition open:bg-surface-container-highest/80 open:shadow-[0_4px_20px_rgba(26,20,107,0.05)]"
+              >
+                <summary className="cursor-pointer list-none font-label text-sm font-semibold text-on-surface marker:content-none [&::-webkit-details-marker]:hidden">
+                  <span className="flex items-center justify-between gap-4">
+                    <span className="pr-2">{item.q}</span>
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-surface-container-low text-on-surface-variant transition group-open:rotate-180 group-open:bg-primary/10 group-open:text-primary">
+                      <span className="material-symbols-outlined text-xl">expand_more</span>
+                    </span>
+                  </span>
+                </summary>
+                <p className="mt-3 border-t border-outline/10 pt-3 font-body text-sm leading-relaxed text-on-surface-variant">
+                  {item.a}
+                </p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+    </div>
   );
 }
 
@@ -268,22 +602,13 @@ function EmptyState({ hasFilter, city }) {
       <h3 className="mb-2 font-headline font-extrabold text-xl text-on-surface sm:text-2xl">
         {hasFilter
           ? 'Bu filtrede kampanya yok'
-          : `${city?.name ?? 'Bu şehir'} için henüz kampanya yok`}
+          : 'Şehriniz için henüz kampanya yok'}
       </h3>
       <p className="max-w-sm font-body text-sm text-on-surface-variant">
         {hasFilter
-          ? 'Farklı bir kategori deneyebilir veya aramayı genişletebilirsin.'
-          : 'Çok yakında bu şehir için de fırsatlar eklenecek.'}
+          ? 'Farklı bir kategori deneyebilir veya aramayı genişletebilirsiniz.'
+          : 'Yeni kampanyalar eklendikçe burada görünecek.'}
       </p>
-      {!hasFilter && (
-        <Link
-          to="/?sehir=bursa"
-          className="bg-primary-gradient mt-6 inline-flex items-center gap-1 rounded-full px-5 py-2 text-sm font-label font-semibold text-on-primary hover:opacity-90"
-        >
-          Bursa kampanyalarını gör
-          <span className="material-symbols-outlined text-base">arrow_forward</span>
-        </Link>
-      )}
     </div>
   );
 }

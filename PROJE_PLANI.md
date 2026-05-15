@@ -269,7 +269,7 @@ pending ──► paid ──► coupon_issued ──► [kupon: active]
 
 ---
 
-### Milestone 3 — Kampanya Detay & Satın Alma & Kupon
+### Milestone 3 — Kampanya Detay & Satın Alma & Kupon""
 > Tahmini süre: 2 – 2.5 hafta
 
 **Kampanya Detay:**
