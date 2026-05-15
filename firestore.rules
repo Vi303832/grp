@@ -38,13 +38,12 @@ service cloud.firestore {
         && request.resource.data.role == 'user'
         && request.resource.data.email == request.auth.token.email;
 
-      // Hassas alanlar (role, email) güncellenemez; geri kalanı güncellenebilir
-      // Admin tüm alanları güncelleyebilir (setUserRole fonksiyonu için).
+      // Kullanıcı sadece belirli alanları güncelleyebilir
       allow update: if isAdmin()
         || (
           isOwner(userId)
-          && !('role' in request.resource.data.diff(resource.data).affectedKeys())
-          && !('email' in request.resource.data.diff(resource.data).affectedKeys())
+          && request.resource.data.diff(resource.data).affectedKeys()
+              .hasOnly(['displayName', 'phone', 'cityId', 'updatedAt'])
         );
 
       allow delete: if false;
@@ -100,8 +99,7 @@ service cloud.firestore {
 
     // ─── orders ──────────────────────────────────────────────────────────────
     match /orders/{orderId} {
-      allow get: if isOwner(resource.data.userId) || isAdmin();
-      allow list: if isAdmin();
+      allow read: if isOwner(resource.data.userId) || isAdmin();
 
       // Sipariş oluşturma/güncelleme Cloud Function üzerinden (Admin SDK).
       // Admin panelinden manuel durum güncellemesi için admin create/update açık.
@@ -114,8 +112,7 @@ service cloud.firestore {
         || isAdmin()
         || (isBusiness() && resource.data.businessId == request.auth.uid);
 
-      allow list: if isAdmin()
-        || (isAuth() && request.query.limit <= 50);
+      allow list: if isAdmin() || isOwner(resource.data.userId);
 
       // Yazma yalnızca Cloud Functions (Admin SDK) üzerinden.
       // Admin manuel iptal `cancelCoupon` Cloud Function ile yapılır.

@@ -8,7 +8,7 @@ import {
   updateProfile,
   deleteUser,
 } from 'firebase/auth';
-import { doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore';
+import { doc, setDoc, getDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from '../lib/firebase';
 
 const useAuthStore = create((set, get) => ({
@@ -110,6 +110,22 @@ const useAuthStore = create((set, get) => ({
 
   resetPassword: async (email) => {
     await sendPasswordResetEmail(auth, email);
+  },
+
+  updateUserProfile: async ({ displayName, phone, cityId }) => {
+    const { user } = get();
+    if (!user) throw new Error('Giriş gerekli');
+    const payload = {
+      displayName: displayName?.trim() || '',
+      phone: phone?.trim() || '',
+      cityId: cityId || 'bursa',
+      updatedAt: serverTimestamp(),
+    };
+    await updateDoc(doc(db, 'users', user.uid), payload);
+    await updateProfile(user, { displayName: payload.displayName });
+    const freshProfile = await get()._fetchProfile(user.uid);
+    set({ userProfile: freshProfile });
+    return freshProfile;
   },
 
   // Profil yenile (rol değişikliği sonrası kullanılır)

@@ -13,6 +13,18 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
+const requiredKeys = ['apiKey', 'projectId', 'appId'];
+const missingKeys = requiredKeys.filter((key) => !firebaseConfig[key]);
+
+if (missingKeys.length > 0) {
+  // eslint-disable-next-line no-console
+  console.error(
+    `[firebase] HATA: Bazı Firebase config değerleri eksik: ${missingKeys.join(', ')}. ` +
+    'Lütfen .env veya .env.local dosyanızı kontrol edin. ' +
+    'Eğer bu dosyalar yoksa .env.example dosyasını kopyalayıp oluşturun.'
+  );
+}
+
 const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);

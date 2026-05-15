@@ -12,6 +12,9 @@ cd functions && npm install && cd ..
 `.env.local` dosyasını `.env.example` üzerinden oluşturup Firebase config değerlerini girin.
 Emülatörle çalışmak için `.env.local` içine `VITE_USE_EMULATORS=true` ekleyin.
 
+> [!IMPORTANT]
+> Eğer tarayıcı konsolunda `auth/invalid-api-key` hatası alıyorsanız, `.env.local` dosyanızın oluşturulduğundan ve içine geçerli API anahtarlarının girildiğinden emin olun.
+
 ## Geliştirme
 
 ```bash
@@ -125,3 +128,9 @@ firebase deploy --only functions
 # Frontend
 npm run build && firebase deploy --only hosting
 ```
+
+> [!TIP]
+> Güvenlik kurallarındaki (`firestore.rules`) değişikliklerin projenizde aktif olması için konsolunuzda aşağıdaki komutu çalıştırarak rules'u deploy etmeniz faydalı olacaktır:
+> ```bash
+> firebase deploy --only firestore:rules
+> ```
